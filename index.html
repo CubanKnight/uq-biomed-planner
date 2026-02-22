@@ -3,1620 +3,751 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>UQ BioMed Study Planner</title>
+<title>UQ BioMed / Science Study Planner 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --uq-purple: #51247A;
-    --uq-gold: #BB9D6B;
-    --uq-light: #F4F0F8;
-    --uq-mid: #E8DFF2;
-    --success: #2D7A5F;
-    --warning: #C8811A;
-    --danger: #B53B2F;
-    --text: #1A1228;
-    --muted: #7A6E85;
-    --white: #FDFBFF;
-    --card: #FFFFFF;
-    --border: #DDD5E8;
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--uq-light);
-    color: var(--text);
-    min-height: 100vh;
-  }
-
-  /* HEADER */
-  header {
-    background: var(--uq-purple);
-    color: white;
-    padding: 0 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 64px;
-    box-shadow: 0 2px 12px rgba(81,36,122,0.3);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-
-  .header-brand {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
-
-  .uq-logo {
-    width: 38px;
-    height: 38px;
-    background: var(--uq-gold);
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'DM Serif Display', serif;
-    font-size: 18px;
-    font-weight: bold;
-    color: white;
-  }
-
-  .brand-text h1 {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.1rem;
-    font-weight: 400;
-    letter-spacing: 0.01em;
-  }
-
-  .brand-text p {
-    font-size: 0.72rem;
-    opacity: 0.75;
-    font-weight: 300;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-
-  .header-stats {
-    display: flex;
-    gap: 2rem;
-    align-items: center;
-  }
-
-  .stat-pill {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2px;
-  }
-
-  .stat-pill .value {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: var(--uq-gold);
-    font-variant-numeric: tabular-nums;
-  }
-
-  .stat-pill .label {
-    font-size: 0.65rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    opacity: 0.7;
-  }
-
-  .progress-bar-wrap {
-    width: 180px;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-  }
-
-  .progress-bar-wrap .label {
-    font-size: 0.65rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    opacity: 0.7;
-  }
-
-  .prog-bar {
-    height: 6px;
-    background: rgba(255,255,255,0.2);
-    border-radius: 99px;
-    overflow: hidden;
-  }
-
-  .prog-fill {
-    height: 100%;
-    background: var(--uq-gold);
-    border-radius: 99px;
-    transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
-  }
-
-  /* LAYOUT */
-  .app {
-    display: grid;
-    grid-template-columns: 300px 1fr;
-    grid-template-rows: auto 1fr;
-    min-height: calc(100vh - 64px);
-  }
-
-  /* SIDEBAR */
-  aside {
-    background: var(--card);
-    border-right: 1px solid var(--border);
-    padding: 1.5rem;
-    overflow-y: auto;
-    max-height: calc(100vh - 64px);
-    position: sticky;
-    top: 64px;
-  }
-
-  .sidebar-section {
-    margin-bottom: 1.5rem;
-  }
-
-  .sidebar-section h3 {
-    font-size: 0.68rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--muted);
-    font-weight: 500;
-    margin-bottom: 0.75rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .form-group {
-    margin-bottom: 1rem;
-  }
-
-  .form-group label {
-    display: block;
-    font-size: 0.8rem;
-    font-weight: 500;
-    margin-bottom: 0.4rem;
-    color: var(--text);
-  }
-
-  .form-group select,
-  .form-group input {
-    width: 100%;
-    padding: 0.55rem 0.75rem;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    font-family: inherit;
-    font-size: 0.85rem;
-    background: var(--white);
-    color: var(--text);
-    transition: border-color 0.2s;
-    appearance: none;
-    cursor: pointer;
-  }
-
-  .form-group select:focus,
-  .form-group input:focus {
-    outline: none;
-    border-color: var(--uq-purple);
-    box-shadow: 0 0 0 3px rgba(81,36,122,0.1);
-  }
-
-  .checkbox-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .checkbox-item {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    cursor: pointer;
-    padding: 0.4rem 0;
-  }
-
-  .checkbox-item input[type="checkbox"] {
-    width: 16px;
-    height: 16px;
-    accent-color: var(--uq-purple);
-    cursor: pointer;
-  }
-
-  .checkbox-item span {
-    font-size: 0.83rem;
-    font-weight: 400;
-  }
-
-  /* Legend */
-  .legend {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .legend-item {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    font-size: 0.78rem;
-    color: var(--muted);
-  }
-
-  .legend-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 3px;
-    flex-shrink: 0;
-  }
-
-  /* MAIN AREA */
-  main {
-    padding: 1.5rem;
-    overflow-y: auto;
-  }
-
-  /* TABS */
-  .tabs {
-    display: flex;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
-    background: var(--card);
-    padding: 0.35rem;
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    width: fit-content;
-  }
-
-  .tab-btn {
-    padding: 0.5rem 1.25rem;
-    border: none;
-    background: transparent;
-    font-family: inherit;
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: var(--muted);
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.2s;
-    white-space: nowrap;
-  }
-
-  .tab-btn.active {
-    background: var(--uq-purple);
-    color: white;
-    box-shadow: 0 2px 8px rgba(81,36,122,0.3);
-  }
-
-  .tab-btn:not(.active):hover {
-    background: var(--uq-mid);
-    color: var(--uq-purple);
-  }
-
-  /* TAB CONTENT */
-  .tab-content { display: none; }
-  .tab-content.active { display: block; }
-
-  /* SEMESTER GRID */
-  .plan-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.25rem;
-  }
-
-  .semester-card {
-    background: var(--card);
-    border-radius: 14px;
-    border: 1px solid var(--border);
-    overflow: hidden;
-    transition: box-shadow 0.2s;
-  }
-
-  .semester-card:hover {
-    box-shadow: 0 4px 20px rgba(81,36,122,0.1);
-  }
-
-  .sem-header {
-    background: var(--uq-purple);
-    color: white;
-    padding: 0.85rem 1.25rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .sem-header h3 {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1rem;
-    font-weight: 400;
-  }
-
-  .sem-units {
-    font-size: 0.75rem;
-    opacity: 0.8;
-    background: rgba(255,255,255,0.15);
-    padding: 0.2rem 0.65rem;
-    border-radius: 20px;
-  }
-
-  .sem-body {
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-    min-height: 140px;
-  }
-
-  /* COURSE CHIPS */
-  .course-chip {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.6rem 0.9rem;
-    border-radius: 10px;
-    border: 1.5px solid transparent;
-    cursor: pointer;
-    transition: all 0.2s;
-    position: relative;
-  }
-
-  .course-chip.completed {
-    background: #EBF5F0;
-    border-color: #A8D5C2;
-  }
-
-  .course-chip.available {
-    background: var(--uq-light);
-    border-color: var(--border);
-  }
-
-  .course-chip.available:hover {
-    border-color: var(--uq-purple);
-    background: var(--uq-mid);
-  }
-
-  .course-chip.locked {
-    background: #F9F5F5;
-    border-color: #E8D5D3;
-    opacity: 0.7;
-  }
-
-  .course-chip.warning-course {
-    background: #FDF5E8;
-    border-color: #F0D090;
-  }
-
-  .course-chip.core { border-left: 3px solid var(--uq-purple); }
-  .course-chip.elective { border-left: 3px solid var(--uq-gold); }
-  .course-chip.major { border-left: 3px solid var(--success); }
-
-  .chip-left {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
-
-  .chip-code {
-    font-size: 0.78rem;
-    font-weight: 600;
-    color: var(--uq-purple);
-    letter-spacing: 0.04em;
-  }
-
-  .chip-name {
-    font-size: 0.8rem;
-    font-weight: 400;
-    color: var(--text);
-  }
-
-  .chip-right {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .chip-units {
-    font-size: 0.7rem;
-    color: var(--muted);
-    font-weight: 500;
-  }
-
-  .chip-status {
-    font-size: 0.9rem;
-  }
-
-  .chip-lock-info {
-    font-size: 0.68rem;
-    color: var(--danger);
-    margin-top: 2px;
-  }
-
-  /* STATUS BADGE */
-  .status-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding: 0.2rem 0.6rem;
-    border-radius: 20px;
-    font-size: 0.68rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-  }
-
-  .badge-completed { background: #EBF5F0; color: var(--success); }
-  .badge-available { background: var(--uq-mid); color: var(--uq-purple); }
-  .badge-locked { background: #F5EDED; color: var(--danger); }
-  .badge-warning { background: #FDF0D8; color: var(--warning); }
-
-  /* ALERTS */
-  .alerts-panel {
-    margin-bottom: 1.5rem;
-  }
-
-  .alert {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.75rem;
-    padding: 0.85rem 1.1rem;
-    border-radius: 10px;
-    margin-bottom: 0.6rem;
-    font-size: 0.83rem;
-    line-height: 1.5;
-  }
-
-  .alert.danger { background: #FFF0EE; border: 1px solid #F5C5C0; color: #8A2A22; }
-  .alert.caution { background: #FFF7ED; border: 1px solid #F5DDAA; color: #7A4E18; }
-  .alert.info { background: var(--uq-mid); border: 1px solid var(--border); color: var(--uq-purple); }
-  .alert.success { background: #EBF5F0; border: 1px solid #A8D5C2; color: #1E6048; }
-
-  .alert-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
-
-  /* CAREER PATHS */
-  .career-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-    margin-top: 0.5rem;
-  }
-
-  .career-card {
-    background: var(--card);
-    border: 1.5px solid var(--border);
-    border-radius: 14px;
-    padding: 1.25rem;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .career-card:hover, .career-card.selected {
-    border-color: var(--uq-purple);
-    box-shadow: 0 4px 16px rgba(81,36,122,0.12);
-  }
-
-  .career-card.selected {
-    background: var(--uq-mid);
-  }
-
-  .career-icon { font-size: 2rem; margin-bottom: 0.6rem; }
-  .career-name { font-weight: 600; font-size: 0.9rem; margin-bottom: 0.4rem; }
-  .career-desc { font-size: 0.77rem; color: var(--muted); line-height: 1.5; }
-
-  .career-courses {
-    margin-top: 0.75rem;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.35rem;
-  }
-
-  .career-tag {
-    font-size: 0.68rem;
-    padding: 0.2rem 0.55rem;
-    background: var(--uq-light);
-    border-radius: 20px;
-    color: var(--uq-purple);
-    font-weight: 500;
-    border: 1px solid var(--border);
-  }
-
-  /* WHAT-IF SIMULATOR */
-  .whatif-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-    margin-top: 1rem;
-  }
-
-  .scenario-card {
-    background: var(--card);
-    border-radius: 14px;
-    border: 1px solid var(--border);
-    padding: 1.25rem;
-  }
-
-  .scenario-card h4 {
-    font-size: 0.95rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .scenario-result {
-    background: var(--uq-light);
-    border-radius: 10px;
-    padding: 1rem;
-    margin-top: 1rem;
-    font-size: 0.82rem;
-    line-height: 1.6;
-  }
-
-  /* WORKLOAD BAR */
-  .workload-section {
-    margin-top: 1.5rem;
-  }
-
-  .workload-bar-row {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 0.85rem;
-  }
-
-  .workload-label {
-    font-size: 0.8rem;
-    width: 120px;
-    flex-shrink: 0;
-    font-weight: 500;
-  }
-
-  .workload-track {
-    flex: 1;
-    height: 28px;
-    background: var(--border);
-    border-radius: 8px;
-    overflow: hidden;
-    position: relative;
-  }
-
-  .workload-fill {
-    height: 100%;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    padding-left: 10px;
-    font-size: 0.72rem;
-    color: white;
-    font-weight: 600;
-    transition: width 0.8s cubic-bezier(0.4,0,0.2,1);
-  }
-
-  .wl-light { background: linear-gradient(90deg, #2D7A5F, #40A882); }
-  .wl-medium { background: linear-gradient(90deg, #C8811A, #E09A30); }
-  .wl-heavy { background: linear-gradient(90deg, #B53B2F, #D4594B); }
-  .wl-very-heavy { background: linear-gradient(90deg, #7A1A14, #B53B2F); }
-
-  .workload-units {
-    font-size: 0.78rem;
-    color: var(--muted);
-    width: 55px;
-    text-align: right;
-    flex-shrink: 0;
-  }
-
-  /* COURSE DETAIL MODAL */
-  .modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(26,18,40,0.5);
-    z-index: 200;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s;
-    backdrop-filter: blur(4px);
-  }
-
-  .modal-overlay.open {
-    opacity: 1;
-    pointer-events: all;
-  }
-
-  .modal {
-    background: var(--card);
-    border-radius: 16px;
-    width: 520px;
-    max-width: 95vw;
-    max-height: 85vh;
-    overflow-y: auto;
-    box-shadow: 0 24px 60px rgba(0,0,0,0.2);
-    transform: translateY(10px);
-    transition: transform 0.2s;
-  }
-
-  .modal-overlay.open .modal {
-    transform: translateY(0);
-  }
-
-  .modal-header {
-    background: var(--uq-purple);
-    color: white;
-    padding: 1.25rem 1.5rem;
-    border-radius: 16px 16px 0 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-  }
-
-  .modal-header h2 {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.2rem;
-    font-weight: 400;
-  }
-
-  .modal-header p {
-    font-size: 0.8rem;
-    opacity: 0.75;
-    margin-top: 3px;
-  }
-
-  .modal-close {
-    background: rgba(255,255,255,0.15);
-    border: none;
-    color: white;
-    width: 30px;
-    height: 30px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    transition: background 0.2s;
-  }
-
-  .modal-close:hover { background: rgba(255,255,255,0.25); }
-
-  .modal-body {
-    padding: 1.5rem;
-  }
-
-  .detail-row {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 1rem;
-    flex-wrap: wrap;
-  }
-
-  .detail-item {
-    flex: 1;
-    min-width: 120px;
-  }
-
-  .detail-item .dl { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 0.25rem; }
-  .detail-item .dv { font-size: 0.9rem; font-weight: 600; }
-
-  .prereq-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    margin-top: 0.5rem;
-  }
-
-  .prereq-chip {
-    padding: 0.25rem 0.65rem;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    font-weight: 500;
-  }
-
-  .prereq-met { background: #EBF5F0; color: var(--success); border: 1px solid #A8D5C2; }
-  .prereq-unmet { background: #FFF0EE; color: var(--danger); border: 1px solid #F5C5C0; }
-
-  .modal-actions {
-    display: flex;
-    gap: 0.75rem;
-    margin-top: 1.5rem;
-  }
-
-  .btn {
-    flex: 1;
-    padding: 0.7rem 1.25rem;
-    border-radius: 10px;
-    border: none;
-    font-family: inherit;
-    font-size: 0.88rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .btn-primary {
-    background: var(--uq-purple);
-    color: white;
-  }
-
-  .btn-primary:hover { background: #3E1A5E; }
-  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
-
-  .btn-secondary {
-    background: var(--uq-light);
-    color: var(--uq-purple);
-    border: 1.5px solid var(--border);
-  }
-
-  .btn-secondary:hover { background: var(--uq-mid); }
-
-  /* Section headings */
-  .section-heading {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.3rem;
-    font-weight: 400;
-    color: var(--uq-purple);
-    margin-bottom: 0.35rem;
-  }
-
-  .section-sub {
-    font-size: 0.82rem;
-    color: var(--muted);
-    margin-bottom: 1.25rem;
-  }
-
-  /* Responsive */
-  @media (max-width: 900px) {
-    .app { grid-template-columns: 1fr; }
-    aside { max-height: none; position: relative; top: 0; }
-    .plan-grid { grid-template-columns: 1fr; }
-    .career-grid { grid-template-columns: 1fr 1fr; }
-    .whatif-grid { grid-template-columns: 1fr; }
-    .header-stats { display: none; }
-  }
-
-  /* Animations */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(12px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .plan-grid .semester-card {
-    animation: fadeUp 0.4s ease both;
-  }
-
-  .semester-card:nth-child(1) { animation-delay: 0.05s; }
-  .semester-card:nth-child(2) { animation-delay: 0.1s; }
-  .semester-card:nth-child(3) { animation-delay: 0.15s; }
-  .semester-card:nth-child(4) { animation-delay: 0.2s; }
-  .semester-card:nth-child(5) { animation-delay: 0.25s; }
-  .semester-card:nth-child(6) { animation-delay: 0.3s; }
-  .semester-card:nth-child(7) { animation-delay: 0.35s; }
-  .semester-card:nth-child(8) { animation-delay: 0.4s; }
-
-  .chip-tooltip {
-    position: absolute;
-    bottom: calc(100% + 8px);
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--text);
-    color: white;
-    font-size: 0.72rem;
-    padding: 0.4rem 0.75rem;
-    border-radius: 8px;
-    white-space: nowrap;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.15s;
-    z-index: 50;
-  }
-
-  .course-chip:hover .chip-tooltip { opacity: 1; }
-
-  .add-elective-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.4rem;
-    padding: 0.5rem;
-    border: 1.5px dashed var(--border);
-    border-radius: 10px;
-    background: transparent;
-    font-family: inherit;
-    font-size: 0.8rem;
-    color: var(--muted);
-    cursor: pointer;
-    transition: all 0.2s;
-    width: 100%;
-  }
-
-  .add-elective-btn:hover {
-    border-color: var(--uq-purple);
-    color: var(--uq-purple);
-    background: var(--uq-light);
-  }
-
-  /* Completion ring */
-  .completion-ring {
-    position: relative;
-    width: 60px;
-    height: 60px;
-  }
-
-  .completion-ring svg {
-    transform: rotate(-90deg);
-  }
-
-  .ring-text {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: var(--uq-gold);
-  }
-
-  /* Graduation banner */
-  .graduation-banner {
-    background: linear-gradient(135deg, var(--uq-purple), #7B3BB5);
-    color: white;
-    padding: 1.25rem 1.5rem;
-    border-radius: 14px;
-    margin-bottom: 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-  }
-
-  .grad-info h4 {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.1rem;
-    font-weight: 400;
-    margin-bottom: 0.25rem;
-  }
-
-  .grad-info p { font-size: 0.82rem; opacity: 0.8; }
+:root{--p:#51247A;--gold:#BB9D6B;--pl:#F4F0F8;--pm:#E8DFF2;--ok:#2D7A5F;--warn:#C8811A;--err:#B53B2F;--txt:#1A1228;--muted:#7A6E85;--card:#FFFFFF;--bdr:#DDD5E8;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--pl);color:var(--txt);min-height:100vh;}
+header{background:var(--p);color:#fff;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(81,36,122,.3);}
+.brand{display:flex;align-items:center;gap:12px;}
+.logo{width:36px;height:36px;background:var(--gold);border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display',serif;font-size:16px;font-weight:bold;color:#fff;}
+.brand h1{font-family:'DM Serif Display',serif;font-size:1.05rem;font-weight:400;}
+.brand p{font-size:.65rem;opacity:.7;letter-spacing:.06em;text-transform:uppercase;}
+.hstats{display:flex;gap:1.5rem;align-items:center;}
+.stat{display:flex;flex-direction:column;align-items:center;gap:2px;}
+.stat .v{font-size:1.2rem;font-weight:700;color:var(--gold);font-variant-numeric:tabular-nums;}
+.stat .l{font-size:.6rem;text-transform:uppercase;letter-spacing:.07em;opacity:.7;}
+.pbar-wrap{width:160px;}
+.pbar-wrap .l{font-size:.6rem;text-transform:uppercase;letter-spacing:.07em;opacity:.7;margin-bottom:4px;}
+.pbar{height:5px;background:rgba(255,255,255,.2);border-radius:99px;overflow:hidden;}
+.pfill{height:100%;background:var(--gold);border-radius:99px;transition:width .6s ease;}
+
+.app{display:grid;grid-template-columns:280px 1fr;min-height:calc(100vh - 60px);}
+aside{background:var(--card);border-right:1px solid var(--bdr);padding:1.25rem;overflow-y:auto;max-height:calc(100vh - 60px);position:sticky;top:60px;}
+.ss-title{font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:500;margin-bottom:.6rem;padding-bottom:.4rem;border-bottom:1px solid var(--bdr);}
+.ss{margin-bottom:1.25rem;}
+.fg{margin-bottom:.85rem;}
+.fg label{display:block;font-size:.78rem;font-weight:500;margin-bottom:.35rem;}
+.fg select,.fg input{width:100%;padding:.5rem .7rem;border:1px solid var(--bdr);border-radius:8px;font-family:inherit;font-size:.82rem;background:#fff;color:var(--txt);appearance:none;cursor:pointer;transition:border .2s;}
+.fg select:focus,.fg input:focus{outline:none;border-color:var(--p);box-shadow:0 0 0 3px rgba(81,36,122,.1);}
+.cbgrp{display:flex;flex-direction:column;gap:.4rem;}
+.cb{display:flex;align-items:center;gap:.5rem;cursor:pointer;padding:.3rem 0;font-size:.8rem;}
+.cb input{width:15px;height:15px;accent-color:var(--p);cursor:pointer;}
+.legend{display:flex;flex-direction:column;gap:.4rem;}
+.leg{display:flex;align-items:center;gap:.6rem;font-size:.75rem;color:var(--muted);}
+.ldot{width:11px;height:11px;border-radius:3px;flex-shrink:0;}
+
+main{padding:1.25rem;overflow-y:auto;}
+.tabs{display:flex;gap:.4rem;margin-bottom:1.25rem;background:var(--card);padding:.3rem;border-radius:10px;border:1px solid var(--bdr);width:fit-content;}
+.tab{padding:.45rem 1.1rem;border:none;background:transparent;font-family:inherit;font-size:.82rem;font-weight:500;color:var(--muted);border-radius:7px;cursor:pointer;transition:all .2s;white-space:nowrap;}
+.tab.active{background:var(--p);color:#fff;box-shadow:0 2px 8px rgba(81,36,122,.3);}
+.tab:not(.active):hover{background:var(--pm);color:var(--p);}
+.tc{display:none;}
+.tc.active{display:block;}
+
+.note{background:var(--pm);border:1px solid var(--bdr);border-left:3px solid var(--p);border-radius:10px;padding:.85rem 1rem;font-size:.8rem;line-height:1.6;margin-bottom:1.25rem;color:var(--p);}
+
+.pgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.1rem;}
+.sem-card{background:var(--card);border-radius:13px;border:1px solid var(--bdr);overflow:hidden;animation:fadeUp .4s ease both;}
+.sem-card:nth-child(1){animation-delay:.05s} .sem-card:nth-child(2){animation-delay:.1s} .sem-card:nth-child(3){animation-delay:.15s} .sem-card:nth-child(4){animation-delay:.2s} .sem-card:nth-child(5){animation-delay:.25s} .sem-card:nth-child(6){animation-delay:.3s} .sem-card:nth-child(7){animation-delay:.35s} .sem-card:nth-child(8){animation-delay:.4s}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.sem-hd{background:var(--p);color:#fff;padding:.75rem 1.1rem;display:flex;justify-content:space-between;align-items:center;}
+.sem-hd h3{font-family:'DM Serif Display',serif;font-size:.95rem;font-weight:400;}
+.sem-units{font-size:.7rem;opacity:.8;background:rgba(255,255,255,.15);padding:.18rem .6rem;border-radius:20px;}
+.sem-body{padding:.9rem;display:flex;flex-direction:column;gap:.5rem;min-height:130px;}
+
+.chip{display:flex;align-items:center;justify-content:space-between;padding:.55rem .85rem;border-radius:9px;border:1.5px solid transparent;cursor:pointer;transition:all .2s;position:relative;}
+.chip.completed{background:#EBF5F0;border-color:#A8D5C2;}
+.chip.available{background:var(--pl);border-color:var(--bdr);}
+.chip.available:hover{border-color:var(--p);background:var(--pm);}
+.chip.locked{background:#F9F5F5;border-color:#E8D5D3;opacity:.65;}
+.chip.biomed-core{border-left:3px solid var(--p);}
+.chip.bsc-core{border-left:3px solid var(--gold);}
+.chip.elective{border-left:3px solid var(--ok);}
+.chip-l{display:flex;flex-direction:column;gap:1px;}
+.chip-code{font-size:.74rem;font-weight:700;color:var(--p);letter-spacing:.04em;}
+.chip.bsc-core .chip-code{color:#8A6B30;}
+.chip.elective .chip-code{color:var(--ok);}
+.chip-name{font-size:.77rem;font-weight:400;color:var(--txt);}
+.chip-miss{font-size:.65rem;color:var(--err);margin-top:1px;}
+.chip-r{display:flex;align-items:center;gap:.45rem;}
+.chip-u{font-size:.68rem;color:var(--muted);font-weight:500;}
+.chip-s{font-size:.85rem;}
+.info-btn{background:none;border:1px solid var(--bdr);color:var(--muted);border-radius:5px;padding:1px 6px;font-size:.65rem;cursor:pointer;transition:all .15s;}
+.info-btn:hover{border-color:var(--p);color:var(--p);}
+.chip-tip{position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:var(--txt);color:#fff;font-size:.68rem;padding:.35rem .7rem;border-radius:7px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s;z-index:50;}
+.chip:hover .chip-tip{opacity:1;}
+.add-btn{display:flex;align-items:center;justify-content:center;gap:.35rem;padding:.45rem;border:1.5px dashed var(--bdr);border-radius:9px;background:transparent;font-family:inherit;font-size:.76rem;color:var(--muted);cursor:pointer;transition:all .2s;width:100%;}
+.add-btn:hover{border-color:var(--p);color:var(--p);background:var(--pl);}
+
+.alert{display:flex;align-items:flex-start;gap:.7rem;padding:.8rem 1rem;border-radius:9px;margin-bottom:.55rem;font-size:.8rem;line-height:1.5;}
+.al-danger{background:#FFF0EE;border:1px solid #F5C5C0;color:#8A2A22;}
+.al-warn{background:#FFF7ED;border:1px solid #F5DDAA;color:#7A4E18;}
+.al-info{background:var(--pm);border:1px solid var(--bdr);color:var(--p);}
+.al-ok{background:#EBF5F0;border:1px solid #A8D5C2;color:#1E6048;}
+.al-icon{font-size:.95rem;flex-shrink:0;margin-top:1px;}
+
+.grad-banner{background:linear-gradient(135deg,var(--p),#7B3BB5);color:#fff;padding:1.1rem 1.4rem;border-radius:13px;margin-bottom:1.25rem;display:flex;align-items:center;gap:1.25rem;}
+.gb-txt h4{font-family:'DM Serif Display',serif;font-size:1rem;font-weight:400;margin-bottom:.2rem;}
+.gb-txt p{font-size:.78rem;opacity:.8;}
+
+.sec-h{font-family:'DM Serif Display',serif;font-size:1.25rem;color:var(--p);margin-bottom:.25rem;}
+.sec-s{font-size:.8rem;color:var(--muted);margin-bottom:1.1rem;}
+
+.wi-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-top:.75rem;}
+.wi-card{background:var(--card);border:1px solid var(--bdr);border-radius:13px;padding:1.1rem;}
+.wi-card h4{font-size:.9rem;font-weight:600;margin-bottom:.85rem;display:flex;align-items:center;gap:.5rem;}
+.wi-result{background:var(--pl);border-radius:9px;padding:.9rem;margin-top:.85rem;font-size:.8rem;line-height:1.6;display:none;}
+.btn{width:100%;padding:.62rem 1rem;border-radius:9px;border:none;font-family:inherit;font-size:.84rem;font-weight:600;cursor:pointer;transition:all .2s;}
+.btn-p{background:var(--p);color:#fff;}
+.btn-p:hover{background:#3E1A5E;}
+.btn-p:disabled{opacity:.5;cursor:not-allowed;}
+.btn-s{background:var(--pl);color:var(--p);border:1.5px solid var(--bdr);}
+.btn-s:hover{background:var(--pm);}
+
+.wl-row{display:flex;align-items:center;gap:.9rem;margin-bottom:.75rem;}
+.wl-lbl{font-size:.77rem;width:130px;flex-shrink:0;font-weight:500;line-height:1.35;}
+.wl-track{flex:1;height:26px;background:var(--bdr);border-radius:7px;overflow:hidden;}
+.wl-fill{height:100%;border-radius:7px;display:flex;align-items:center;padding-left:9px;font-size:.68rem;color:#fff;font-weight:600;transition:width .8s ease;}
+.wl-light{background:linear-gradient(90deg,#2D7A5F,#40A882);}
+.wl-med{background:linear-gradient(90deg,#C8811A,#E09A30);}
+.wl-heavy{background:linear-gradient(90deg,#B53B2F,#D4594B);}
+.wl-hrs{font-size:.75rem;color:var(--muted);width:55px;text-align:right;flex-shrink:0;}
+
+.career-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.9rem;margin-top:.5rem;}
+.car-card{background:var(--card);border:1.5px solid var(--bdr);border-radius:13px;padding:1.1rem;cursor:pointer;transition:all .2s;}
+.car-card:hover,.car-card.sel{border-color:var(--p);box-shadow:0 4px 16px rgba(81,36,122,.12);}
+.car-card.sel{background:var(--pm);}
+.car-icon{font-size:1.9rem;margin-bottom:.5rem;}
+.car-name{font-weight:600;font-size:.85rem;margin-bottom:.35rem;}
+.car-desc{font-size:.74rem;color:var(--muted);line-height:1.5;}
+.car-tags{margin-top:.65rem;display:flex;flex-wrap:wrap;gap:.3rem;}
+.car-tag{font-size:.65rem;padding:.18rem .5rem;background:var(--pl);border-radius:20px;color:var(--p);font-weight:500;border:1px solid var(--bdr);}
+.car-tip{margin-top:.65rem;padding:.55rem;background:var(--pl);border-radius:8px;font-size:.7rem;color:var(--muted);line-height:1.5;}
+
+.modal-overlay{position:fixed;inset:0;background:rgba(26,18,40,.5);z-index:200;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s;backdrop-filter:blur(4px);}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal{background:var(--card);border-radius:15px;width:500px;max-width:95vw;max-height:85vh;overflow-y:auto;box-shadow:0 24px 60px rgba(0,0,0,.2);transform:translateY(10px);transition:transform .2s;}
+.modal-overlay.open .modal{transform:translateY(0);}
+.modal-hd{background:var(--p);color:#fff;padding:1.1rem 1.4rem;border-radius:15px 15px 0 0;display:flex;justify-content:space-between;align-items:flex-start;}
+.modal-hd h2{font-family:'DM Serif Display',serif;font-size:1.15rem;font-weight:400;}
+.modal-hd p{font-size:.76rem;opacity:.75;margin-top:3px;}
+.modal-x{background:rgba(255,255,255,.15);border:none;color:#fff;width:28px;height:28px;border-radius:7px;cursor:pointer;font-size:.95rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s;}
+.modal-x:hover{background:rgba(255,255,255,.25);}
+.modal-body{padding:1.4rem;}
+.d-row{display:flex;gap:.9rem;margin-bottom:.9rem;flex-wrap:wrap;}
+.di{flex:1;min-width:100px;}
+.di .dl{font-size:.67rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.2rem;}
+.di .dv{font-size:.87rem;font-weight:600;}
+.pq-list{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.45rem;}
+.pq-chip{padding:.22rem .6rem;border-radius:20px;font-size:.72rem;font-weight:500;}
+.pq-met{background:#EBF5F0;color:var(--ok);border:1px solid #A8D5C2;}
+.pq-unmet{background:#FFF0EE;color:var(--err);border:1px solid #F5C5C0;}
+.modal-acts{display:flex;gap:.65rem;margin-top:1.4rem;}
+.modal-acts .btn{flex:1;}
+
+@media(max-width:900px){.app{grid-template-columns:1fr;}aside{max-height:none;position:relative;top:0;}.pgrid{grid-template-columns:1fr;}.career-grid{grid-template-columns:1fr 1fr;}.wi-grid{grid-template-columns:1fr;}.hstats{display:none;}}
 </style>
 </head>
 <body>
 
 <header>
-  <div class="header-brand">
-    <div class="uq-logo">UQ</div>
-    <div class="brand-text">
-      <h1>BioMed Study Planner</h1>
-      <p>Bachelor of Biomedical Sciences · University of Queensland</p>
+  <div class="brand">
+    <div class="logo">UQ</div>
+    <div>
+      <h1>BioMed / Science Study Planner</h1>
+      <p>Bachelors of Biomedical Science / Science (2547) · 2026</p>
     </div>
   </div>
-  <div class="header-stats">
-    <div class="stat-pill">
-      <span class="value" id="units-done">0</span>
-      <span class="label">Units Done</span>
+  <div class="hstats">
+    <div class="stat"><span class="v" id="hd">0</span><span class="l">Units Done</span></div>
+    <div class="stat"><span class="v" id="hr">96</span><span class="l">Remaining</span></div>
+    <div class="pbar-wrap">
+      <div class="l">Degree Progress</div>
+      <div class="pbar"><div class="pfill" id="pf" style="width:0%"></div></div>
     </div>
-    <div class="stat-pill">
-      <span class="value" id="units-remain">96</span>
-      <span class="label">Remaining</span>
-    </div>
-    <div class="progress-bar-wrap">
-      <span class="label">Degree Progress</span>
-      <div class="prog-bar">
-        <div class="prog-fill" id="degree-progress" style="width:0%"></div>
-      </div>
-    </div>
-    <div class="completion-ring">
-      <svg width="60" height="60" viewBox="0 0 60 60">
-        <circle cx="30" cy="30" r="25" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="5"/>
-        <circle cx="30" cy="30" r="25" fill="none" stroke="#BB9D6B" stroke-width="5"
-          stroke-dasharray="157" id="ring-dash" stroke-dashoffset="157" stroke-linecap="round"
-          style="transition: stroke-dashoffset 0.6s cubic-bezier(0.4,0,0.2,1)"/>
-      </svg>
-      <div class="ring-text" id="ring-pct">0%</div>
-    </div>
+    <div class="stat"><span class="v" id="hp" style="color:var(--gold)">0%</span><span class="l">Complete</span></div>
   </div>
 </header>
 
 <div class="app">
-  <!-- SIDEBAR -->
-  <aside>
-    <div class="sidebar-section">
-      <h3>Your Profile</h3>
-      <div class="form-group">
-        <label>Start Semester</label>
-        <select id="start-sem" onchange="renderPlan()">
-          <option value="sem1-2024">Semester 1, 2024</option>
-          <option value="sem2-2024">Semester 2, 2024</option>
-          <option value="sem1-2025">Semester 1, 2025</option>
-          <option value="sem2-2025">Semester 2, 2025</option>
-          <option value="sem1-2026" selected>Semester 1, 2026</option>
-          <option value="sem2-2026">Semester 2, 2026</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Study Load</label>
-        <select id="study-load">
-          <option value="full">Full-time (4 courses/sem)</option>
-          <option value="part">Part-time (2 courses/sem)</option>
-          <option value="mixed">Mixed</option>
-        </select>
+<aside>
+  <div class="ss">
+    <div class="ss-title">Your Profile</div>
+    <div class="fg">
+      <label>Start Semester</label>
+      <select id="start-sem" onchange="renderPlan()">
+        <option value="sem1-2026" selected>Semester 1, 2026</option>
+        <option value="sem2-2026">Semester 2, 2026</option>
+        <option value="sem1-2025">Semester 1, 2025</option>
+        <option value="sem2-2025">Semester 2, 2025</option>
+        <option value="sem1-2024">Semester 1, 2024</option>
+        <option value="sem2-2024">Semester 2, 2024</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label>Study Load</label>
+      <select id="study-load">
+        <option value="full">Full-time (4 courses/sem)</option>
+        <option value="part">Part-time (2 courses/sem)</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label>BSc Major / Science Component</label>
+      <select id="bsc-major">
+        <option value="general">General (no major selected)</option>
+        <option value="biochem">Biochemistry & Molecular Biology</option>
+        <option value="genetics">Genetics</option>
+        <option value="microbio">Microbiology</option>
+        <option value="pharmacology">Pharmacology (minor)</option>
+        <option value="neuroscience">Neuroscience (minor)</option>
+        <option value="immunology">Immunology (minor)</option>
+        <option value="physiology">Human Physiology (minor)</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="ss">
+    <div class="ss-title">Career Path Goals</div>
+    <div class="cbgrp">
+      <label class="cb"><input type="checkbox" value="medicine" onchange="updateCareer()"> <span>🩺 Medicine (GAMSAT)</span></label>
+      <label class="cb"><input type="checkbox" value="research" onchange="updateCareer()"> <span>🔬 Research / PhD</span></label>
+      <label class="cb"><input type="checkbox" value="biotech" onchange="updateCareer()"> <span>🧬 Biotechnology</span></label>
+      <label class="cb"><input type="checkbox" value="pharma" onchange="updateCareer()"> <span>💊 Pharmaceuticals</span></label>
+      <label class="cb"><input type="checkbox" value="clinical" onchange="updateCareer()"> <span>🏥 Clinical Trials</span></label>
+      <label class="cb"><input type="checkbox" value="pubhealth" onchange="updateCareer()"> <span>🌐 Public Health</span></label>
+    </div>
+  </div>
+
+  <div class="ss">
+    <div class="ss-title">Legend</div>
+    <div class="legend">
+      <div class="leg"><div class="ldot" style="background:var(--p)"></div> BBiomedSc Core Course</div>
+      <div class="leg"><div class="ldot" style="background:var(--gold)"></div> BSc / Elective Course</div>
+      <div class="leg"><div class="ldot" style="background:#EBF5F0;border:1px solid #A8D5C2"></div> Completed ✓</div>
+      <div class="leg"><div class="ldot" style="background:#F9F5F5;border:1px solid #E8D5D3"></div> Locked 🔒</div>
+    </div>
+  </div>
+</aside>
+
+<main>
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('plan')">📋 Study Plan</button>
+    <button class="tab" onclick="switchTab('whatif')">🔀 What-If</button>
+    <button class="tab" onclick="switchTab('workload')">📊 Workload</button>
+    <button class="tab" onclick="switchTab('career')">🎯 Career Paths</button>
+  </div>
+
+  <!-- PLAN TAB -->
+  <div id="tab-plan" class="tc active">
+    <div id="alerts"></div>
+    <div id="grad-banner" class="grad-banner" style="display:none">
+      <div style="font-size:2.2rem">🎓</div>
+      <div class="gb-txt">
+        <h4>On track to graduate!</h4>
+        <p id="grad-msg">Expected graduation: November 2030</p>
       </div>
     </div>
 
-    <div class="sidebar-section">
-      <h3>Select Major</h3>
-      <div class="form-group">
-        <select id="major-select" onchange="updateMajor()">
-          <option value="none">-- No Major Selected --</option>
-          <option value="biomed-science">Biomedical Science</option>
-          <option value="genetics">Genetics & Genomics</option>
-          <option value="pharmacology">Pharmacology</option>
-          <option value="microbio">Microbiology & Immunology</option>
-          <option value="physiology">Physiology & Neuroscience</option>
-          <option value="biochem">Biochemistry & Mol. Biology</option>
-        </select>
-      </div>
+    <div class="note">
+      <strong>📌 Program 2547 – 2026 Structure:</strong> This dual degree requires completing the <strong>BBiomedSc component</strong> (compulsory courses + program electives) AND the <strong>BSc component</strong> (major/extended major + electives). Total: 96 units over 4 years. Click any course for details. Click to tick ✓ when completed.
     </div>
 
-    <div class="sidebar-section">
-      <h3>Career Path Goal</h3>
-      <div class="checkbox-group">
-        <label class="checkbox-item">
-          <input type="checkbox" value="medicine" onchange="updateCareer()"> <span>🩺 Medicine (GAMSAT)</span>
-        </label>
-        <label class="checkbox-item">
-          <input type="checkbox" value="research" onchange="updateCareer()"> <span>🔬 Research / PhD</span>
-        </label>
-        <label class="checkbox-item">
-          <input type="checkbox" value="biotech" onchange="updateCareer()"> <span>🧬 Biotechnology</span>
-        </label>
-        <label class="checkbox-item">
-          <input type="checkbox" value="pharma" onchange="updateCareer()"> <span>💊 Pharmaceuticals</span>
-        </label>
-        <label class="checkbox-item">
-          <input type="checkbox" value="clinical" onchange="updateCareer()"> <span>🏥 Clinical Trials</span>
-        </label>
-        <label class="checkbox-item">
-          <input type="checkbox" value="pubhealth" onchange="updateCareer()"> <span>🌐 Public Health</span>
-        </label>
-      </div>
-    </div>
+    <div class="pgrid" id="pgrid"></div>
+  </div>
 
-    <div class="sidebar-section">
-      <h3>Legend</h3>
-      <div class="legend">
-        <div class="legend-item"><div class="legend-dot" style="background:#51247A"></div> Core Course</div>
-        <div class="legend-item"><div class="legend-dot" style="background:#BB9D6B"></div> Elective</div>
-        <div class="legend-item"><div class="legend-dot" style="background:#2D7A5F"></div> Major Course</div>
-        <div class="legend-item"><div class="legend-dot" style="background:#EBF5F0; border:1px solid #A8D5C2"></div> Completed ✓</div>
-        <div class="legend-item"><div class="legend-dot" style="background:#F9F5F5; border:1px solid #E8D5D3"></div> Locked 🔒</div>
-        <div class="legend-item"><div class="legend-dot" style="background:#FDF5E8; border:1px solid #F0D090"></div> Warning ⚠️</div>
-      </div>
-    </div>
-  </aside>
-
-  <!-- MAIN -->
-  <main>
-    <div class="tabs">
-      <button class="tab-btn active" onclick="switchTab('plan')">📋 Study Plan</button>
-      <button class="tab-btn" onclick="switchTab('whatif')">🔀 What-If Simulator</button>
-      <button class="tab-btn" onclick="switchTab('workload')">📊 Workload</button>
-      <button class="tab-btn" onclick="switchTab('career')">🎯 Career Paths</button>
-    </div>
-
-    <!-- PLAN TAB -->
-    <div id="tab-plan" class="tab-content active">
-      <div id="alerts-panel" class="alerts-panel"></div>
-
-      <div id="grad-banner" class="graduation-banner" style="display:none">
-        <div style="font-size:2.5rem">🎓</div>
-        <div class="grad-info">
-          <h4>On track to graduate!</h4>
-          <p id="grad-msg">Expected graduation: November 2027 · 96 units completed</p>
+  <!-- WHAT-IF TAB -->
+  <div id="tab-whatif" class="tc">
+    <div class="sec-h">What-If Scenario Simulator</div>
+    <div class="sec-s">Test different academic scenarios and instantly see the impact on your graduation timeline.</div>
+    <div class="wi-grid">
+      <div class="wi-card">
+        <h4>📉 What if I fail a course?</h4>
+        <div class="fg"><label>Select course</label>
+          <select id="fail-course">
+            <option value="">-- Choose course --</option>
+            <option value="BIOC2000">BIOC2000 – Biochemistry & Molecular Biology</option>
+            <option value="BIOL2200">BIOL2200 – Cell Structure & Function</option>
+            <option value="BIOL2202">BIOL2202 – Genetics</option>
+            <option value="BIOM2011">BIOM2011 – Integrative Cell & Tissue Biology</option>
+            <option value="BIOM2012">BIOM2012 – Systems Physiology</option>
+            <option value="CHEM1100">CHEM1100 – Chemistry 1</option>
+            <option value="CHEM1200">CHEM1200 – Chemistry 2</option>
+          </select>
         </div>
+        <button class="btn btn-p" onclick="simFail()">Simulate</button>
+        <div class="wi-result" id="fail-res"></div>
       </div>
-
-      <div class="plan-grid" id="plan-grid"></div>
-    </div>
-
-    <!-- WHAT-IF TAB -->
-    <div id="tab-whatif" class="tab-content">
-      <div class="section-heading">What-If Scenario Simulator</div>
-      <div class="section-sub">Test different academic scenarios and instantly see the impact on your graduation timeline.</div>
-
-      <div class="whatif-grid">
-        <div class="scenario-card">
-          <h4>📉 What if I fail a course?</h4>
-          <div class="form-group">
-            <label>Select course</label>
-            <select id="fail-course">
-              <option value="">-- Choose course --</option>
-              <option value="BIOC2000">BIOC2000 – Molecules, Genes & Cells</option>
-              <option value="BIOL1040">BIOL1040 – Cells to Organisms</option>
-              <option value="CHEM1100">CHEM1100 – Chemistry 1</option>
-              <option value="PHYL2030">PHYL2030 – Physiology & Pharmacology I</option>
-              <option value="MICR3010">MICR3010 – Medical Microbiology</option>
-            </select>
-          </div>
-          <button class="btn btn-primary" onclick="simulateFail()">Simulate</button>
-          <div class="scenario-result" id="fail-result" style="display:none"></div>
+      <div class="wi-card">
+        <h4>📅 What if I go part-time?</h4>
+        <div class="fg"><label>From which semester?</label>
+          <select id="pt-from"><option value="3">Semester 3</option><option value="4">Semester 4</option><option value="5">Semester 5</option></select>
         </div>
-
-        <div class="scenario-card">
-          <h4>📅 What if I go part-time?</h4>
-          <div class="form-group">
-            <label>From which semester?</label>
-            <select id="parttime-from">
-              <option value="3">Semester 3</option>
-              <option value="4">Semester 4</option>
-              <option value="5">Semester 5</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Courses per semester</label>
-            <select id="parttime-load">
-              <option value="2">2 courses (part-time)</option>
-              <option value="3">3 courses (reduced load)</option>
-            </select>
-          </div>
-          <button class="btn btn-primary" onclick="simulatePartTime()">Simulate</button>
-          <div class="scenario-result" id="parttime-result" style="display:none"></div>
+        <div class="fg"><label>Courses per semester</label>
+          <select id="pt-load"><option value="2">2 courses (part-time)</option><option value="3">3 courses (reduced)</option></select>
         </div>
-
-        <div class="scenario-card">
-          <h4>🔄 What if I change majors?</h4>
-          <div class="form-group">
-            <label>Switch from current major to:</label>
-            <select id="new-major">
-              <option value="genetics">Genetics & Genomics</option>
-              <option value="pharmacology">Pharmacology</option>
-              <option value="microbio">Microbiology & Immunology</option>
-              <option value="physiology">Physiology & Neuroscience</option>
-              <option value="biochem">Biochemistry & Mol. Biology</option>
-            </select>
-          </div>
-          <button class="btn btn-primary" onclick="simulateMajorChange()">Simulate</button>
-          <div class="scenario-result" id="major-result" style="display:none"></div>
+        <button class="btn btn-p" onclick="simPT()">Simulate</button>
+        <div class="wi-result" id="pt-res"></div>
+      </div>
+      <div class="wi-card">
+        <h4>🔄 What if I change my BSc major?</h4>
+        <div class="fg"><label>Switch to</label>
+          <select id="new-major">
+            <option value="genetics">Genetics</option>
+            <option value="biochem">Biochemistry & Mol. Biology</option>
+            <option value="microbio">Microbiology</option>
+            <option value="neuroscience">Neuroscience (minor)</option>
+            <option value="pharmacology">Pharmacology (minor)</option>
+          </select>
         </div>
-
-        <div class="scenario-card">
-          <h4>📚 What if I overload a semester?</h4>
-          <div class="form-group">
-            <label>Which semester to overload?</label>
-            <select id="overload-sem">
-              <option value="3">Semester 3</option>
-              <option value="4">Semester 4</option>
-              <option value="5">Semester 5</option>
-              <option value="6">Semester 6</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Extra courses</label>
-            <select id="overload-extra">
-              <option value="1">+1 course (5 total)</option>
-            </select>
-          </div>
-          <button class="btn btn-primary" onclick="simulateOverload()">Simulate</button>
-          <div class="scenario-result" id="overload-result" style="display:none"></div>
+        <button class="btn btn-p" onclick="simMajor()">Simulate</button>
+        <div class="wi-result" id="major-res"></div>
+      </div>
+      <div class="wi-card">
+        <h4>📚 What if I overload a semester?</h4>
+        <div class="fg"><label>Which semester?</label>
+          <select id="ol-sem"><option value="3">Semester 3</option><option value="4">Semester 4</option><option value="5">Semester 5</option></select>
         </div>
+        <button class="btn btn-p" onclick="simOL()">Simulate</button>
+        <div class="wi-result" id="ol-res"></div>
       </div>
     </div>
+  </div>
 
-    <!-- WORKLOAD TAB -->
-    <div id="tab-workload" class="tab-content">
-      <div class="section-heading">Semester Workload Visualiser</div>
-      <div class="section-sub">Estimated weekly contact + study hours per semester based on your current plan.</div>
-
-      <div class="workload-section" id="workload-bars"></div>
-
-      <div style="margin-top:2rem; background:var(--card); border-radius:14px; border:1px solid var(--border); padding:1.25rem;">
-        <div style="font-weight:600; margin-bottom:1rem; font-size:0.9rem;">⚠️ Graduation Risk Flags</div>
-        <div id="risk-flags"></div>
-      </div>
+  <!-- WORKLOAD TAB -->
+  <div id="tab-workload" class="tc">
+    <div class="sec-h">Semester Workload Visualiser</div>
+    <div class="sec-s">Estimated weekly contact + study hours per semester.</div>
+    <div id="wl-bars" style="margin-top:1rem;"></div>
+    <div style="margin-top:1.5rem;background:var(--card);border-radius:13px;border:1px solid var(--bdr);padding:1.1rem;">
+      <div style="font-weight:600;margin-bottom:.85rem;font-size:.88rem;">⚠️ Graduation Risk Flags</div>
+      <div id="risk-flags"></div>
     </div>
+  </div>
 
-    <!-- CAREER TAB -->
-    <div id="tab-career" class="tab-content">
-      <div class="section-heading">Career Path Alignment</div>
-      <div class="section-sub">Select a career pathway to see recommended courses and key decisions for your degree.</div>
-      <div class="career-grid" id="career-grid"></div>
-    </div>
-  </main>
+  <!-- CAREER TAB -->
+  <div id="tab-career" class="tc">
+    <div class="sec-h">Career Path Alignment</div>
+    <div class="sec-s">Select a pathway to see key courses and strategic advice for your degree.</div>
+    <div class="career-grid" id="career-grid"></div>
+  </div>
+</main>
 </div>
 
 <!-- MODAL -->
-<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
-  <div class="modal" id="modal">
-    <div class="modal-header">
-      <div>
-        <h2 id="modal-title">Course Details</h2>
-        <p id="modal-subtitle"></p>
-      </div>
-      <button class="modal-close" onclick="closeModalDirect()">✕</button>
+<div class="modal-overlay" id="modal-ov" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="modal-hd">
+      <div><h2 id="m-title">Course</h2><p id="m-sub"></p></div>
+      <button class="modal-x" onclick="closeModalD()">✕</button>
     </div>
     <div class="modal-body">
-      <div class="detail-row" id="modal-meta"></div>
-      <div style="margin-bottom:1rem;">
-        <div style="font-size:0.7rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--muted); margin-bottom:0.5rem;">Description</div>
-        <div id="modal-desc" style="font-size:0.85rem; line-height:1.6; color:var(--text);"></div>
+      <div class="d-row" id="m-meta"></div>
+      <div style="margin-bottom:.9rem;">
+        <div class="dl">Description</div>
+        <div id="m-desc" style="font-size:.83rem;line-height:1.6;margin-top:.3rem;"></div>
       </div>
-      <div id="modal-prereqs-section" style="margin-bottom:1rem;">
-        <div style="font-size:0.7rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--muted); margin-bottom:0.5rem;">Prerequisites</div>
-        <div class="prereq-list" id="modal-prereqs"></div>
+      <div id="m-pq-sec">
+        <div class="dl">Prerequisites</div>
+        <div class="pq-list" id="m-pq"></div>
       </div>
-      <div id="modal-actions" class="modal-actions"></div>
+      <div class="modal-acts" id="m-acts"></div>
     </div>
   </div>
 </div>
 
 <script>
-// ============================================================
-// DATA: UQ BACHELOR OF BIOMEDICAL SCIENCES COURSE DATABASE
-// ============================================================
+// ================================================================
+// REAL 2026 COURSE DATA — Program 2547 BBiomedSc/BSc
+// Source: Official UQ 2026 Dual Degree Study Planner PDF + Programs & Courses
+// ================================================================
 const COURSES = {
-  // YEAR 1 CORE
-  'BIOL1020': { name:'Biology: Form & Function', units:2, type:'core', sem:[1], prereqs:[], desc:'Introduces key concepts in cell biology, genetics, evolution, and the diversity of life. Foundational for all BioMed programmes.', workload:'medium', bottleneck:false },
-  'BIOL1040': { name:'Cells to Organisms', units:2, type:'core', sem:[2], prereqs:[], desc:'Examines how cells integrate to form tissues and organs, including signalling, development and homeostasis.', workload:'medium', bottleneck:false },
-  'CHEM1100': { name:'Chemistry 1', units:2, type:'core', sem:[1,2], prereqs:[], desc:'Covers atomic structure, bonding, thermodynamics, and introductory organic chemistry essential for biochemistry pathways.', workload:'heavy', bottleneck:false },
-  'CHEM1200': { name:'Chemistry 2', units:2, type:'core', sem:[2], prereqs:['CHEM1100'], desc:'Extends organic chemistry into reactions, mechanisms, and functional groups critical for understanding biomolecules.', workload:'heavy', bottleneck:true },
-  'MATH1051': { name:'Calculus & Linear Algebra', units:2, type:'core', sem:[1,2], prereqs:[], desc:'Provides mathematical foundations for modelling biological systems, data analysis, and pharmacokinetics.', workload:'medium', bottleneck:false },
-  'STAT1201': { name:'Analysis of Scientific Data', units:2, type:'core', sem:[1,2], prereqs:[], desc:'Introduces statistical thinking for experimental design, hypothesis testing, and bioinformatics applications.', workload:'light', bottleneck:false },
+  // ── YEAR 1 BBiomedSc CORE ──
+  'BIOL1020': { name:'Genes, Cells & Evolution', units:2, type:'biomed-core', sem:[1,2], prereqs:[], desc:'Explores genetic principles, cell biology and evolution. The foundational Year 1 biology course required for all BBiomedSc students. Note: BIOL1050 replaces this for students without QSenior Biology.', workload:'medium', bottleneck:false },
+  'SCIE1000': { name:'Theory & Practice in Science', units:2, type:'bsc-core', sem:[1,2], prereqs:[], desc:'Introduces scientific thinking, experimental design, data analysis and communication. A mandatory BSc component course that builds research literacy across disciplines.', workload:'light', bottleneck:false },
+  'BIOM1001': { name:'Fundamentals of Biomedical Sciences I', units:2, type:'biomed-core', sem:[1], prereqs:[], desc:'Introduces core biomedical science concepts including cell and molecular biology, human anatomy and physiology at the system level. Foundation for all subsequent BIOM courses.', workload:'medium', bottleneck:false },
+  'CHEM1100': { name:'Chemistry 1', units:2, type:'biomed-core', sem:[1,2], prereqs:[], desc:'Core organic and inorganic chemistry principles. Covers atomic theory, bonding, thermodynamics and introductory organic chemistry. Essential prerequisite for CHEM1200 and BIOC2000.', workload:'heavy', bottleneck:false },
+  // Semester 2 Year 1
+  'BIOM1002': { name:'Fundamentals of Biomedical Sciences II', units:2, type:'biomed-core', sem:[2], prereqs:['BIOM1001'], desc:'Continues from BIOM1001 — deeper coverage of physiology, immunology, pharmacology, and biomedical research methods. Prepares students for Year 2 core courses.', workload:'medium', bottleneck:false },
+  'STAT1201': { name:'Analysis of Scientific Data', units:2, type:'bsc-core', sem:[1,2], prereqs:[], desc:'Statistical foundations for scientific research: hypothesis testing, regression, experimental design and data interpretation. STAT1301 (Advanced) is an alternative for students with strong maths background.', workload:'light', bottleneck:false },
+  'CHEM1200': { name:'Chemistry 2', units:2, type:'biomed-core', sem:[2], prereqs:['CHEM1100'], desc:'Extends organic chemistry into functional groups, reaction mechanisms, stereochemistry and spectroscopy. Direct prerequisite for BIOC2000 — missing this delays all Year 2 biochemistry.', workload:'heavy', bottleneck:true },
 
-  // YEAR 2 CORE
-  'BIOC2000': { name:'Molecules, Genes & Cells', units:2, type:'core', sem:[1], prereqs:['BIOL1040','CHEM1200'], desc:'Explores DNA replication, transcription, translation, protein structure and enzyme kinetics. A critical gateway course for upper-level BioMed.', workload:'very-heavy', bottleneck:true },
-  'BIOM2011': { name:'Introductory Biostatistics', units:2, type:'core', sem:[1,2], prereqs:['STAT1201'], desc:'Applies statistical methods to biomedical research including regression, survival analysis, and clinical trial design.', workload:'medium', bottleneck:false },
-  'MICR2000': { name:'Microbiology & Infectious Disease', units:2, type:'core', sem:[2], prereqs:['BIOL1040'], desc:'Covers bacterial, viral, and fungal biology, host-pathogen interactions, and antimicrobial mechanisms.', workload:'medium', bottleneck:false },
-  'PHYL2030': { name:'Physiology & Pharmacology I', units:2, type:'core', sem:[1], prereqs:['BIOL1040','CHEM1100'], desc:'Integrates organ systems physiology with pharmacological principles including receptor theory and drug action.', workload:'heavy', bottleneck:false },
-  'PHYL2040': { name:'Physiology & Pharmacology II', units:2, type:'core', sem:[2], prereqs:['PHYL2030'], desc:'Advanced cardiovascular, respiratory, and endocrine physiology. Introduces clinical pharmacokinetics and drug metabolism.', workload:'heavy', bottleneck:false },
-  'ANAT2211': { name:'Anatomical Basis of Medicine', units:2, type:'core', sem:[1], prereqs:['BIOL1040'], desc:'Systematic study of gross human anatomy with prosection. Integrates radiological anatomy and clinical correlations.', workload:'heavy', bottleneck:false },
+  // ── YEAR 2 BBiomedSc CORE ──
+  'BIOC2000': { name:'Biochemistry & Molecular Biology', units:2, type:'biomed-core', sem:[1], prereqs:['CHEM1200','BIOL1020'], desc:'The central gateway course of the degree. Covers DNA replication, gene expression, protein structure, enzyme kinetics, and metabolic regulation. Failure blocks all BIOC3000-level courses.', workload:'very-heavy', bottleneck:true },
+  'BIOL2200': { name:'Cell Structure & Function', units:2, type:'biomed-core', sem:[1], prereqs:['BIOL1020','BIOM1002'], desc:'Advanced cell biology covering organelle function, cell signalling, cytoskeleton, membrane transport and cell division. Integrates molecular and structural approaches.', workload:'heavy', bottleneck:false },
+  'BIOM2011': { name:'Integrative Cell & Tissue Biology', units:2, type:'biomed-core', sem:[1], prereqs:['BIOM1002'], desc:'Histology and cell biology integrated with physiology. Covers tissue types, developmental biology and cell-to-organ organisation. Prerequisite for Year 3 biomedical electives.', workload:'medium', bottleneck:false },
+  // Semester 2 Year 2
+  'BIOL2202': { name:'Genetics', units:2, type:'biomed-core', sem:[2], prereqs:['BIOL1020','BIOM1002'], desc:'Mendelian genetics, molecular genetics, linkage analysis, genomics and population genetics. Provides the genetic foundation for upper-level courses in immunology, pharmacogenomics and biotechnology.', workload:'medium', bottleneck:false },
+  'BIOM2012': { name:'Systems Physiology', units:2, type:'biomed-core', sem:[2], prereqs:['BIOM1002'], desc:'Integrated physiology of cardiovascular, respiratory, renal, endocrine and nervous systems. Clinical correlations throughout. Key preparation for medicine and allied health pathways.', workload:'heavy', bottleneck:false },
 
-  // YEAR 3 CORE
-  'BIOC3000': { name:'Metabolic Biochemistry', units:2, type:'core', sem:[1], prereqs:['BIOC2000'], desc:'Advanced metabolism including glycolysis, TCA cycle, oxidative phosphorylation, lipid and amino acid metabolism.', workload:'very-heavy', bottleneck:true },
-  'MICR3010': { name:'Medical Microbiology', units:2, type:'core', sem:[1], prereqs:['MICR2000'], desc:'Pathogenic microorganisms, mechanisms of virulence, diagnostics, and antimicrobial resistance in clinical contexts.', workload:'heavy', bottleneck:false },
-  'BIOM3000': { name:'Research Methods in BioMed', units:2, type:'core', sem:[1,2], prereqs:['BIOM2011'], desc:'Capstone research skills: experimental design, grant writing, lab safety, ethics, and scientific communication.', workload:'medium', bottleneck:false },
-  'BIOM3020': { name:'BioMed Thesis Project', units:4, type:'core', sem:[1,2], prereqs:['BIOM3000','BIOC2000'], desc:'A major independent research project supervised by a UQ academic. Involves literature review, data collection and analysis, and a formal thesis.', workload:'very-heavy', bottleneck:true },
-  'IMMU3020': { name:'Immunology', units:2, type:'core', sem:[2], prereqs:['MICR2000','BIOC2000'], desc:'Innate and adaptive immunity, lymphocyte development, immunological memory, vaccines, and immunopathologies.', workload:'heavy', bottleneck:false },
+  // ── YEAR 3–4 BBiomedSc PROGRAM ELECTIVES (select from list) ──
+  // A sample of the full list from programs-courses.uq.edu.au
+  'ANAT3022': { name:'Clinical & Functional Anatomy', units:2, type:'biomed-core', sem:[1,2], prereqs:['BIOL2200','BIOM2012'], desc:'Advanced human anatomy with clinical applications. Prosection-based learning with radiological anatomy integration. Strongly recommended for medicine applicants.', workload:'heavy', bottleneck:false },
+  'BIOC3000': { name:'Metabolic Biochemistry', units:2, type:'biomed-core', sem:[1], prereqs:['BIOC2000'], desc:'Advanced intermediary metabolism: glycolysis, TCA cycle, oxidative phosphorylation, lipid & amino acid metabolism, and metabolic regulation. Core for biochemistry/pharmacology pathways.', workload:'very-heavy', bottleneck:true },
+  'BIOC3003': { name:'Molecular Medicine', units:2, type:'biomed-core', sem:[2], prereqs:['BIOC2000'], desc:'Molecular basis of human disease, genetic disorders, cancer biology, and precision medicine. Integrates genomics, proteomics and bioinformatics approaches.', workload:'heavy', bottleneck:false },
+  'BIOC3005': { name:'Drug Discovery & Development', units:2, type:'biomed-core', sem:[1,2], prereqs:['BIOC2000'], desc:'The drug development pipeline from target identification to clinical trials. Covers medicinal chemistry, pharmacokinetics and regulatory considerations.', workload:'medium', bottleneck:false },
+  'BIOM3002': { name:'Biomedical Science Capstone', units:2, type:'biomed-core', sem:[1,2], prereqs:['BIOM2011','STAT1201','BIOM2012'], desc:'Integrative capstone covering biomedical ethics, biostatistics, critical appraisal of research, and science communication. Required for all BBiomedSc students approaching graduation.', workload:'medium', bottleneck:false },
+  'MICR3001': { name:'Medical Microbiology', units:2, type:'biomed-core', sem:[1], prereqs:['BIOM1002'], desc:'Pathogenic bacteria, viruses and fungi — mechanisms of virulence, diagnostics, and antimicrobial resistance. Excellent preparation for medicine, public health and clinical science careers.', workload:'heavy', bottleneck:false },
+  'MICR3002': { name:'Immunology', units:2, type:'biomed-core', sem:[2], prereqs:['BIOM1002','BIOL2202'], desc:'Innate and adaptive immunity, lymphocyte development, antibody structure, vaccines, and immunopathology. Bridges microbiology, pharmacology and clinical science.', workload:'heavy', bottleneck:false },
+  'NEUR3001': { name:'Neuroscience', units:2, type:'biomed-core', sem:[1,2], prereqs:['BIOM2012'], desc:'Molecular and systems neuroscience: neural signalling, sensory systems, motor control, memory, neurological disorders and neuropharmacology.', workload:'heavy', bottleneck:false },
+  'NEUR3002': { name:'Neuropharmacology', units:2, type:'biomed-core', sem:[2], prereqs:['BIOM2012','BIOC2000'], desc:'Pharmacological basis of neurological and psychiatric disorders. Covers drug mechanisms, receptor pharmacology and CNS drug development.', workload:'heavy', bottleneck:false },
+  'BIOM3014': { name:'Developmental Biology', units:2, type:'biomed-core', sem:[1,2], prereqs:['BIOL2200','BIOL2202'], desc:'Embryology, stem cell biology, organogenesis and regenerative medicine. Highly relevant for medicine, biotechnology and therapeutic development pathways.', workload:'medium', bottleneck:false },
+  'BIOC3006': { name:'Structural Biochemistry', units:2, type:'biomed-core', sem:[2], prereqs:['BIOC3000'], desc:'Protein structure determination by X-ray crystallography and cryo-EM, structure-based drug design, and protein-ligand interactions.', workload:'heavy', bottleneck:false },
+  'SCIE3220': { name:'Research Project (BiomedSc)', units:2, type:'biomed-core', sem:[1,2], prereqs:['BIOM2011','BIOC2000'], desc:'Supervised research project in a UQ biomedical laboratory. Students undertake original data collection, literature review and written thesis. Max 4 units across degree.', workload:'heavy', bottleneck:false },
 
-  // MAJOR COURSES – PHARMACOLOGY
-  'PHRM3011': { name:'Advanced Pharmacology', units:2, type:'major', sem:[1], prereqs:['PHYL2040'], desc:'Drug-receptor interactions, pharmacogenomics, therapeutics, and drug development pipeline.', workload:'heavy', bottleneck:false },
-  'PHRM3012': { name:'Clinical Pharmacokinetics', units:2, type:'major', sem:[2], prereqs:['PHYL2040'], desc:'Advanced kinetic modelling, therapeutic drug monitoring, dose optimisation in special populations.', workload:'medium', bottleneck:false },
-
-  // MAJOR COURSES – GENETICS
-  'GENE2000': { name:'Genetics & Genomics', units:2, type:'major', sem:[2], prereqs:['BIOC2000'], desc:'Mendelian and molecular genetics, genome structure, bioinformatics tools, and population genetics.', workload:'medium', bottleneck:false },
-  'GENE3010': { name:'Human Molecular Genetics', units:2, type:'major', sem:[1], prereqs:['GENE2000'], desc:'Genetic disease mechanisms, CRISPR technologies, prenatal diagnostics, and personalised medicine.', workload:'heavy', bottleneck:false },
-
-  // MAJOR COURSES – BIOCHEMISTRY
-  'BIOC3010': { name:'Structural Biochemistry', units:2, type:'major', sem:[2], prereqs:['BIOC3000'], desc:'Protein structure, X-ray crystallography, cryo-EM, and structure-based drug design.', workload:'heavy', bottleneck:false },
-  'BIOC3020': { name:'Molecular Biology Techniques', units:2, type:'major', sem:[1], prereqs:['BIOC2000'], desc:'PCR, sequencing, cloning, CRISPR, proteomics, and advanced microscopy techniques.', workload:'heavy', bottleneck:false },
-
-  // ELECTIVES
-  'BIOM2020': { name:'Global Health & Disease', units:2, type:'elective', sem:[2], prereqs:[], desc:'Epidemiology of infectious and non-communicable diseases from a global perspective. Ideal for public health career paths.', workload:'light', bottleneck:false },
-  'NEUR3030': { name:'Neuroscience', units:2, type:'elective', sem:[1], prereqs:['PHYL2030'], desc:'Neural signalling, sensory systems, motor control, neurological disorders, and neuropharmacology.', workload:'heavy', bottleneck:false },
-  'PATH3010': { name:'Pathology', units:2, type:'elective', sem:[2], prereqs:['MICR2000','IMMU3020'], desc:'Disease mechanisms at the cellular and molecular level. Excellent preparation for medicine and clinical careers.', workload:'medium', bottleneck:false },
+  // ── BSc GENERAL / ELECTIVE SLOTS ──
+  'BSC-L1-A': { name:'BSc Level 1 Prerequisite/Compulsory Course', units:2, type:'bsc-core', sem:[1,2], prereqs:[], desc:'A Level 1 course required as prerequisite or compulsory for your chosen BSc major. The specific course depends on your major selection. Common choices: BIOL1040, CHEM1100 (if not counting toward BBiomedSc), PSYC1030, MATH1051.', workload:'medium', bottleneck:false },
+  'BSC-L1-B': { name:'BSc Level 1 Major Prerequisite', units:2, type:'bsc-core', sem:[1,2], prereqs:[], desc:'Second Level 1 prerequisite course for your BSc major. Choose based on your selected Science major from the BSc course list.', workload:'medium', bottleneck:false },
+  'BSC-L2-A': { name:'BSc Level 2 Major Course A', units:2, type:'bsc-core', sem:[1,2], prereqs:['BSC-L1-A'], desc:'Level 2 course from your chosen BSc major course list. Selection depends on your specific major. Consult the UQ Programs & Courses website for the full list.', workload:'medium', bottleneck:false },
+  'BSC-L2-B': { name:'BSc Level 2 Major Course B', units:2, type:'bsc-core', sem:[1,2], prereqs:['BSC-L1-A'], desc:'Second Level 2 course from your BSc major. Together with BSC-L2-A, these build your specialised science knowledge base.', workload:'medium', bottleneck:false },
+  'BSC-L2-C': { name:'BSc Level 2 Major Course C', units:2, type:'bsc-core', sem:[1,2], prereqs:['BSC-L1-B'], desc:'Third Level 2 course from your BSc major or program elective list.', workload:'medium', bottleneck:false },
+  'BSC-L3-A': { name:'BSc Level 3 Major Course A', units:2, type:'bsc-core', sem:[1,2], prereqs:['BSC-L2-A'], desc:'Level 3 course from your BSc major. At least 10 units of your BSc component must be at Level 3 or higher.', workload:'heavy', bottleneck:false },
+  'BSC-L3-B': { name:'BSc Level 3 Major Course B', units:2, type:'bsc-core', sem:[1,2], prereqs:['BSC-L2-A'], desc:'Second Level 3 course from your BSc major list.', workload:'heavy', bottleneck:false },
+  'BSC-L3-C': { name:'BSc Level 3 Major Course C', units:2, type:'bsc-core', sem:[1,2], prereqs:['BSC-L2-B'], desc:'Third Level 3 course from your BSc major list.', workload:'heavy', bottleneck:false },
+  'BSC-L3-D': { name:'BSc Level 3 Major Course D', units:2, type:'bsc-core', sem:[1,2], prereqs:['BSC-L2-B'], desc:'Fourth Level 3 course from BSc major or BSc program elective list.', workload:'heavy', bottleneck:false },
+  'BSC-ELEC': { name:'BSc Program Elective Course', units:2, type:'elective', sem:[1,2], prereqs:[], desc:'Any course from the BSc course list at any level. Use these to complement your BBiomedSc electives or explore another science discipline.', workload:'medium', bottleneck:false },
+  'BIOMED-L3-ELEC-A': { name:'BBiomedSc Level 3 Elective A', units:2, type:'elective', sem:[1,2], prereqs:['BIOC2000'], desc:'Choose from: ANAT3022, BIOC3000, BIOC3003, BIOC3005, BIOC3006, BIOL3003, BIOL3006, BIOM3002, BIOM3014, BIOM3015, BIOM3020, BIOM3401, BIOM3402, BIOT3002, DEVB3001, DEVB3002, MICR3001, MICR3002, MICR3003, NEUR3001, NEUR3002, SCIE3220.', workload:'heavy', bottleneck:false },
+  'BIOMED-L3-ELEC-B': { name:'BBiomedSc Level 3 Elective B', units:2, type:'elective', sem:[1,2], prereqs:['BIOC2000'], desc:'Choose from the same BBiomedSc Level 3 Program Elective course list. Select courses aligned with your career pathway and BSc major.', workload:'heavy', bottleneck:false },
+  'BIOMED-L3-ELEC-C': { name:'BBiomedSc Level 3 Elective C', units:2, type:'elective', sem:[1,2], prereqs:['BIOM2011'], desc:'Third BBiomedSc Level 3 Program Elective. Year 3–4 students select from the full program elective course list to meet degree requirements.', workload:'heavy', bottleneck:false },
+  'BIOMED-L3-ELEC-D': { name:'BBiomedSc Level 3 Elective D', units:2, type:'elective', sem:[1,2], prereqs:['BIOM2011'], desc:'Fourth BBiomedSc Level 3 Program Elective.', workload:'heavy', bottleneck:false },
 };
 
-// ============================================================
-// SEMESTER PLAN STRUCTURE
-// ============================================================
-const SEMESTER_PLAN = [
-  { id: 1, label: 'Semester 1 – Year 1', courses: ['BIOL1020','CHEM1100','MATH1051','STAT1201'] },
-  { id: 2, label: 'Semester 2 – Year 1', courses: ['BIOL1040','CHEM1200','BIOM2020'] },
-  { id: 3, label: 'Semester 1 – Year 2', courses: ['BIOC2000','PHYL2030','ANAT2211','BIOM2011'] },
-  { id: 4, label: 'Semester 2 – Year 2', courses: ['PHYL2040','MICR2000','BIOC2020'] },
-  { id: 5, label: 'Semester 1 – Year 3', courses: ['BIOC3000','MICR3010','BIOM3000'] },
-  { id: 6, label: 'Semester 2 – Year 3', courses: ['IMMU3020','BIOM3020','GENE2000'] },
-  { id: 7, label: 'Semester 1 – Honours', courses: ['BIOM3020','GENE3010','BIOC3020'] },
-  { id: 8, label: 'Semester 2 – Honours', courses: ['BIOM3020','PHRM3011','PHRM3012'] },
+// ================================================================
+// SEMESTER STRUCTURE — from official 2026 UQ PDF planner (Sem 1 start)
+// ================================================================
+const SEM_PLAN_BASE = [
+  { id:1, semN:1, yOff:0, yLbl:'Year 1', courses:['BIOL1020','SCIE1000','BIOM1001','CHEM1100'] },
+  { id:2, semN:2, yOff:0, yLbl:'Year 1', courses:['BIOM1002','STAT1201','CHEM1200','BSC-L1-A'] },
+  { id:3, semN:1, yOff:1, yLbl:'Year 2', courses:['BIOC2000','BIOL2200','BIOM2011','BSC-L1-B'] },
+  { id:4, semN:2, yOff:1, yLbl:'Year 2', courses:['BIOL2202','BIOM2012','BSC-L2-A','BSC-L2-B'] },
+  { id:5, semN:1, yOff:2, yLbl:'Year 3', courses:['BSC-L2-C','BSC-L3-A','BIOMED-L3-ELEC-A','BSC-L3-B'] },
+  { id:6, semN:2, yOff:2, yLbl:'Year 3', courses:['BIOMED-L3-ELEC-B','BSC-L3-C','BIOMED-L3-ELEC-C','BSC-ELEC'] },
+  { id:7, semN:1, yOff:3, yLbl:'Year 4', courses:['BIOMED-L3-ELEC-D','BSC-L3-D','BSC-ELEC','BIOM3002'] },
+  { id:8, semN:2, yOff:3, yLbl:'Year 4', courses:['BIOMED-L3-ELEC-A','BSC-L3-A','BIOMED-L3-ELEC-B','BSC-ELEC'] },
 ];
 
-// State
-let completedCourses = new Set(['BIOL1020','CHEM1100','MATH1051','STAT1201','BIOL1040']);
-let selectedMajor = 'none';
-let selectedCareer = new Set();
-let currentModal = null;
+// Note: Year 4 sem 2 uses same placeholders — in reality students pick different electives each semester
+// The planner shows the structure, students swap in specific elective codes
 
-// ============================================================
-// PREREQUISITE LOGIC ENGINE
-// ============================================================
-function checkPrereqs(courseCode) {
-  const course = COURSES[courseCode];
-  if (!course) return { met: true, missing: [] };
-  const missing = course.prereqs.filter(p => !completedCourses.has(p));
+function getSemPlan() {
+  const val = (document.getElementById('start-sem')||{}).value || 'sem1-2026';
+  const parts = val.split('-');
+  const sS = parseInt(parts[0].replace('sem',''));
+  const sY = parseInt(parts[1]);
+  return SEM_PLAN_BASE.map(s => {
+    const off = (sS - 1) + (s.yOff * 2) + (s.semN - 1);
+    const yr = sY + Math.floor(off / 2);
+    const sn = (off % 2) + 1;
+    return { ...s, label:'Semester '+sn+', '+yr+' – '+s.yLbl };
+  });
+}
+
+// State
+let done = new Set(['BIOL1020','SCIE1000','BIOM1001','CHEM1100','BIOM1002','STAT1201']);
+let selCareer = new Set();
+
+function checkPrereqs(code) {
+  const c = COURSES[code];
+  if (!c) return { met:true, missing:[] };
+  const missing = c.prereqs.filter(p => !done.has(p));
   return { met: missing.length === 0, missing };
 }
 
-function getCourseStatus(courseCode) {
-  if (completedCourses.has(courseCode)) return 'completed';
-  const { met } = checkPrereqs(courseCode);
-  if (!met) return 'locked';
-  return 'available';
+function getStatus(code) {
+  if (done.has(code)) return 'completed';
+  const { met } = checkPrereqs(code);
+  return met ? 'available' : 'locked';
 }
 
-// ============================================================
-// PROGRESS CALCULATIONS
-// ============================================================
 function calcProgress() {
-  const TOTAL_UNITS = 96;
-  let done = 0;
-  completedCourses.forEach(code => {
-    if (COURSES[code]) done += COURSES[code].units;
-  });
-  return { done, remaining: TOTAL_UNITS - done, pct: Math.min((done / TOTAL_UNITS) * 100, 100) };
+  const TOTAL = 96;
+  let u = 0;
+  done.forEach(code => { if (COURSES[code]) u += COURSES[code].units; });
+  return { u, rem: TOTAL - u, pct: Math.min(u / TOTAL * 100, 100) };
 }
 
-function updateProgressUI() {
-  const { done, remaining, pct } = calcProgress();
-  document.getElementById('units-done').textContent = done;
-  document.getElementById('units-remain').textContent = remaining;
-  document.getElementById('degree-progress').style.width = pct + '%';
-  document.getElementById('ring-pct').textContent = Math.round(pct) + '%';
-  const dashLen = 157;
-  document.getElementById('ring-dash').style.strokeDashoffset = dashLen - (dashLen * pct / 100);
-
-  const gradBanner = document.getElementById('grad-banner');
-  if (pct >= 75) {
-    gradBanner.style.display = 'flex';
-    const sems = Math.ceil(remaining / 8);
-    const startYr = parseInt((document.getElementById('start-sem')?.value || 'sem1-2026').split('-')[1]); const yr = startYr + Math.ceil(sems / 2) + 3;
-    document.getElementById('grad-msg').textContent = `Expected graduation: November ${yr} · ${96 - remaining} / 96 units completed`;
+function updateHeader() {
+  const { u, rem, pct } = calcProgress();
+  document.getElementById('hd').textContent = u;
+  document.getElementById('hr').textContent = rem;
+  document.getElementById('pf').style.width = pct + '%';
+  document.getElementById('hp').textContent = Math.round(pct) + '%';
+  const gb = document.getElementById('grad-banner');
+  if (pct >= 70) {
+    gb.style.display = 'flex';
+    const val = (document.getElementById('start-sem')||{}).value||'sem1-2026';
+    const sY = parseInt(val.split('-')[1]);
+    document.getElementById('grad-msg').textContent = 
+      'Expected graduation: November ' + (sY + 3) + ' · ' + u + ' / 96 units completed';
   } else {
-    gradBanner.style.display = 'none';
+    gb.style.display = 'none';
   }
 }
 
-// ============================================================
-// ALERTS ENGINE
-// ============================================================
 function generateAlerts() {
   const alerts = [];
-  let lockedBottlenecks = [];
-  Object.entries(COURSES).forEach(([code, c]) => {
-    if (c.bottleneck && !completedCourses.has(code) && !checkPrereqs(code).met) {
-      lockedBottlenecks.push(code);
-    }
-  });
-
-  if (lockedBottlenecks.length > 0) {
-    alerts.push({ type:'danger', icon:'🚨', text:`Graduation risk: <strong>${lockedBottlenecks.join(', ')}</strong> are bottleneck courses with unmet prerequisites. Complete prerequisites urgently.` });
+  if (!done.has('CHEM1200') && done.has('CHEM1100')) {
+    alerts.push({ t:'al-warn', icon:'⚠️', txt:'<strong>CHEM1200</strong> is now unlocked. Enrol immediately — it is the prerequisite for BIOC2000, which gates all of Year 2 BBiomedSc.' });
   }
-
-  if (!completedCourses.has('CHEM1200') && completedCourses.has('CHEM1100')) {
-    alerts.push({ type:'caution', icon:'⚠️', text:'CHEM1200 (Chemistry 2) unlocked! Enrol now — it's a prerequisite for BIOC2000, which gates Year 2 entirely.' });
+  if (!done.has('BIOC2000') && done.has('CHEM1200') && done.has('BIOL1020')) {
+    alerts.push({ t:'al-warn', icon:'⚠️', txt:'<strong>BIOC2000 (Biochemistry & Molecular Biology)</strong> is unlocked and is the most critical bottleneck in this degree. Prioritise this course in your next semester.' });
   }
-
-  if (completedCourses.has('BIOC2000') && !completedCourses.has('BIOC3000')) {
-    alerts.push({ type:'info', icon:'ℹ️', text:'You've unlocked Year 3 Biochemistry courses. Consider BIOC3000 next semester for your major pathway.' });
+  if (done.has('BIOC2000') && !done.has('BIOC3000')) {
+    alerts.push({ t:'al-info', icon:'ℹ️', txt:'BIOC2000 complete! You can now access all Level 3 BBiomedSc electives including BIOC3000, MICR3001, MICR3002, NEUR3001, and the Research Project (SCIE3220).' });
   }
-
-  if (completedCourses.size >= 5) {
-    alerts.push({ type:'success', icon:'✅', text:'Great progress! You're on track. Keep an eye on BIOM3020 (Thesis) — it runs across two semesters and should be started in Year 3 Sem 1.' });
+  if (done.size >= 10) {
+    alerts.push({ t:'al-ok', icon:'✅', txt:'Great progress! You are past the midpoint. Ensure BIOM3002 (Biomedical Science Capstone) is planned for your final year.' });
   }
-
-  const panel = document.getElementById('alerts-panel');
-  panel.innerHTML = alerts.map(a => `
-    <div class="alert ${a.type}">
-      <span class="alert-icon">${a.icon}</span>
-      <span>${a.text}</span>
-    </div>
-  `).join('');
+  if (done.size <= 3) {
+    alerts.push({ t:'al-info', icon:'📌', txt:'<strong>New to the program?</strong> Your required Year 1 Semester 1 courses are: BIOL1020, SCIE1000, BIOM1001, and CHEM1100. If you lack QSenior Chemistry, add CHEM1090 as an elective first.' });
+  }
+  const panel = document.getElementById('alerts');
+  panel.innerHTML = alerts.map(a =>
+    `<div class="alert ${a.t}"><span class="al-icon">${a.icon}</span><span>${a.txt}</span></div>`
+  ).join('');
 }
 
-// ============================================================
-// PLAN RENDERER
-// ============================================================
 function renderPlan() {
-  const grid = document.getElementById('plan-grid');
+  const grid = document.getElementById('pgrid');
   grid.innerHTML = '';
-
-  getSemesterPlan().forEach(sem => {
-    const semUnits = sem.courses.reduce((t, c) => t + (COURSES[c]?.units || 0), 0);
-
+  getSemPlan().forEach(sem => {
+    const semU = sem.courses.reduce((t, c) => t + (COURSES[c]?.units || 0), 0);
     const card = document.createElement('div');
-    card.className = 'semester-card';
-
-    const courses = sem.courses.map(code => {
+    card.className = 'sem-card';
+    const chips = sem.courses.map(code => {
       const c = COURSES[code];
       if (!c) return '';
-      const status = getCourseStatus(code);
+      const status = getStatus(code);
       const { missing } = checkPrereqs(code);
-
-      let chipClass = `course-chip ${status} ${c.type}`;
-      let statusIcon = status === 'completed' ? '✓' : status === 'locked' ? '🔒' : '○';
-      let lockInfo = status === 'locked' && missing.length > 0 ? `<div class="chip-lock-info">Needs: ${missing.join(', ')}</div>` : '';
-
-      let tooltip = status === 'locked' ? `Missing: ${missing.join(', ')}` :
-                    status === 'completed' ? 'Click to mark incomplete' :
-                    'Click to mark complete';
-
+      const icon = status === 'completed' ? '✓' : status === 'locked' ? '🔒' : '○';
+      const tip = status === 'locked' ? 'Needs: ' + missing.join(', ') :
+                  status === 'completed' ? 'Click to unmark' : 'Click to mark complete';
+      const missHtml = status === 'locked' && missing.length
+        ? `<div class="chip-miss">Needs: ${missing.join(', ')}</div>` : '';
       return `
-        <div class="${chipClass}" onclick="toggleCourse('${code}')" title="">
-          <span class="chip-tooltip">${tooltip}</span>
-          <div class="chip-left">
+        <div class="chip ${status} ${c.type}" onclick="toggleCourse('${code}')">
+          <span class="chip-tip">${tip}</span>
+          <div class="chip-l">
             <span class="chip-code">${code}</span>
             <span class="chip-name">${c.name}</span>
-            ${lockInfo}
+            ${missHtml}
           </div>
-          <div class="chip-right">
-            <span class="chip-units">${c.units}u</span>
-            <span class="chip-status">${statusIcon}</span>
-            <button onclick="event.stopPropagation(); openModal('${code}')" style="background:none;border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:2px 7px;font-size:0.68rem;cursor:pointer;transition:all 0.15s;" onmouseover="this.style.borderColor='var(--uq-purple)';this.style.color='var(--uq-purple)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">Info</button>
+          <div class="chip-r">
+            <span class="chip-u">${c.units}u</span>
+            <span class="chip-s">${icon}</span>
+            <button class="info-btn" onclick="event.stopPropagation();openModal('${code}')">Info</button>
           </div>
-        </div>
-      `;
+        </div>`;
     }).join('');
-
     card.innerHTML = `
-      <div class="sem-header">
-        <h3>${sem.label}</h3>
-        <span class="sem-units">${semUnits} units</span>
-      </div>
-      <div class="sem-body">
-        ${courses}
-        <button class="add-elective-btn" onclick="showElectiveHint()">+ Add Elective</button>
-      </div>
-    `;
-
+      <div class="sem-hd"><h3>${sem.label}</h3><span class="sem-units">${semU}u</span></div>
+      <div class="sem-body">${chips}<button class="add-btn" onclick="addElective('${sem.id}')">+ Add Course / Elective</button></div>`;
     grid.appendChild(card);
   });
-
-  updateProgressUI();
+  updateHeader();
   generateAlerts();
-  renderWorkload();
 }
 
 function toggleCourse(code) {
-  if (completedCourses.has(code)) {
-    // Check if removing this breaks something downstream
-    completedCourses.delete(code);
+  if (done.has(code)) {
+    done.delete(code);
   } else {
-    const status = getCourseStatus(code);
-    if (status === 'locked') {
-      const { missing } = checkPrereqs(code);
-      alert(`Cannot enrol in ${code}.\n\nMissing prerequisites: ${missing.join(', ')}\n\nComplete these first!`);
+    const { met, missing } = checkPrereqs(code);
+    if (!met) {
+      alert(`Cannot enrol in ${code}.\n\nMissing prerequisites: ${missing.join(', ')}\n\nComplete these courses first.`);
       return;
     }
-    completedCourses.add(code);
+    done.add(code);
   }
   renderPlan();
+  renderWorkload();
 }
 
-// ============================================================
-// MODAL
-// ============================================================
+function addElective(semId) {
+  const code = prompt('Enter course code to add to this semester (e.g. BIOC3000, MICR3001, NEUR3001):');
+  if (!code) return;
+  const upper = code.trim().toUpperCase();
+  if (COURSES[upper]) {
+    const sem = SEM_PLAN_BASE.find(s => s.id === parseInt(semId));
+    if (sem && !sem.courses.includes(upper)) {
+      sem.courses.push(upper);
+      renderPlan();
+    }
+  } else {
+    alert(`Course code "${upper}" not found in the database. Check the UQ Programs & Courses website for the correct code.`);
+  }
+}
+
+// ── MODAL ──
 function openModal(code) {
   const c = COURSES[code];
   if (!c) return;
-  const status = getCourseStatus(code);
+  const status = getStatus(code);
   const { missing } = checkPrereqs(code);
+  document.getElementById('m-title').textContent = code;
+  document.getElementById('m-sub').textContent = c.name;
 
-  document.getElementById('modal-title').textContent = code;
-  document.getElementById('modal-subtitle').textContent = c.name;
+  const badge = status === 'completed'
+    ? '<span style="background:#EBF5F0;color:#2D7A5F;padding:.2rem .65rem;border-radius:20px;font-size:.68rem;font-weight:700;border:1px solid #A8D5C2">✓ Completed</span>'
+    : status === 'locked'
+    ? '<span style="background:#FFF0EE;color:#B53B2F;padding:.2rem .65rem;border-radius:20px;font-size:.68rem;font-weight:700;border:1px solid #F5C5C0">🔒 Locked</span>'
+    : '<span style="background:var(--pm);color:var(--p);padding:.2rem .65rem;border-radius:20px;font-size:.68rem;font-weight:700;border:1px solid var(--bdr)">Available</span>';
 
-  const statusLabel = status === 'completed' ? '<span class="status-badge badge-completed">✓ Completed</span>' :
-                      status === 'locked' ? '<span class="status-badge badge-locked">🔒 Locked</span>' :
-                      '<span class="status-badge badge-available">Available</span>';
+  document.getElementById('m-meta').innerHTML = `
+    <div class="di"><div class="dl">Units</div><div class="dv">${c.units}</div></div>
+    <div class="di"><div class="dl">Type</div><div class="dv" style="text-transform:capitalize">${c.type.replace('-',' ')}</div></div>
+    <div class="di"><div class="dl">Offered</div><div class="dv">Sem ${c.sem.join(' & ')}</div></div>
+    <div class="di"><div class="dl">Status</div><div class="dv">${badge}</div></div>`;
 
-  document.getElementById('modal-meta').innerHTML = `
-    <div class="detail-item"><div class="dl">Units</div><div class="dv">${c.units}</div></div>
-    <div class="detail-item"><div class="dl">Type</div><div class="dv" style="text-transform:capitalize">${c.type}</div></div>
-    <div class="detail-item"><div class="dl">Offered</div><div class="dv">Sem ${c.sem.join(' & ')}</div></div>
-    <div class="detail-item"><div class="dl">Workload</div><div class="dv" style="text-transform:capitalize">${c.workload}</div></div>
-    <div class="detail-item"><div class="dl">Status</div><div class="dv">${statusLabel}</div></div>
-  `;
+  document.getElementById('m-desc').textContent = c.desc;
 
-  document.getElementById('modal-desc').textContent = c.desc;
-
-  const prereqSection = document.getElementById('modal-prereqs-section');
+  const pqSec = document.getElementById('m-pq-sec');
   if (c.prereqs.length > 0) {
-    prereqSection.style.display = 'block';
-    document.getElementById('modal-prereqs').innerHTML = c.prereqs.map(p => {
-      const met = completedCourses.has(p);
-      return `<span class="prereq-chip ${met ? 'prereq-met' : 'prereq-unmet'}">${met ? '✓' : '✗'} ${p}</span>`;
-    }).join('');
+    pqSec.innerHTML = `<div class="dl">Prerequisites</div><div class="pq-list">${
+      c.prereqs.map(p => `<span class="pq-chip ${done.has(p) ? 'pq-met' : 'pq-unmet'}">${done.has(p) ? '✓' : '✗'} ${p}</span>`).join('')
+    }</div>`;
   } else {
-    prereqSection.innerHTML = `<div style="font-size:0.7rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--muted); margin-bottom:0.5rem;">Prerequisites</div><span style="font-size:0.83rem;color:var(--muted)">None — open to all students</span>`;
+    pqSec.innerHTML = `<div class="dl">Prerequisites</div><div style="font-size:.82rem;color:var(--muted);margin-top:.3rem">None — open to all students</div>`;
   }
 
-  let actionHTML = '';
-  if (status === 'completed') {
-    actionHTML = `<button class="btn btn-secondary" onclick="toggleCourse('${code}'); closeModalDirect()">Mark as Incomplete</button>`;
-  } else if (status === 'available') {
-    actionHTML = `<button class="btn btn-primary" onclick="toggleCourse('${code}'); closeModalDirect()">Mark as Completed</button>`;
-  } else {
-    actionHTML = `<button class="btn btn-primary" disabled>🔒 Prerequisites Not Met</button>`;
-  }
-  actionHTML += `<button class="btn btn-secondary" onclick="closeModalDirect()">Close</button>`;
-  document.getElementById('modal-actions').innerHTML = actionHTML;
+  let actHTML = '';
+  if (status === 'completed') actHTML = `<button class="btn btn-s" onclick="toggleCourse('${code}');closeModalD()">Mark Incomplete</button>`;
+  else if (status === 'available') actHTML = `<button class="btn btn-p" onclick="toggleCourse('${code}');closeModalD()">Mark Complete ✓</button>`;
+  else actHTML = `<button class="btn btn-p" disabled>🔒 Prerequisites Not Met</button>`;
+  actHTML += `<button class="btn btn-s" onclick="closeModalD()">Close</button>`;
+  document.getElementById('m-acts').innerHTML = actHTML;
 
-  document.getElementById('modal-overlay').classList.add('open');
-  currentModal = code;
+  document.getElementById('modal-ov').classList.add('open');
 }
 
-function closeModal(e) {
-  if (e.target === document.getElementById('modal-overlay')) closeModalDirect();
-}
+function closeModal(e) { if (e.target.id === 'modal-ov') closeModalD(); }
+function closeModalD() { document.getElementById('modal-ov').classList.remove('open'); }
 
-function closeModalDirect() {
-  document.getElementById('modal-overlay').classList.remove('open');
-  currentModal = null;
-}
-
-// ============================================================
-// WORKLOAD TAB
-// ============================================================
+// ── WORKLOAD ──
 function renderWorkload() {
-  const wlMap = { 'light': 12, 'medium': 18, 'heavy': 26, 'very-heavy': 35 };
-  const maxHours = 40;
-
-  const bars = getSemesterPlan().map((sem, i) => {
-    const hours = sem.courses.reduce((t, c) => t + (wlMap[COURSES[c]?.workload || 'medium'] || 0), 0);
-    const pct = Math.min((hours / maxHours) * 100, 100);
-    const wlClass = hours <= 14 ? 'wl-light' : hours <= 22 ? 'wl-medium' : hours <= 30 ? 'wl-heavy' : 'wl-very-heavy';
-    const label = hours <= 14 ? 'Light' : hours <= 22 ? 'Moderate' : hours <= 30 ? 'Heavy' : 'Very Heavy';
-    return `
-      <div class="workload-bar-row">
-        <div class="workload-label">${sem.label.replace(' – ', '\n')}</div>
-        <div class="workload-track">
-          <div class="workload-fill ${wlClass}" style="width:${pct}%">${label}</div>
-        </div>
-        <div class="workload-units">~${hours}h/wk</div>
-      </div>
-    `;
+  const wl = { 'light':11, 'medium':17, 'heavy':26, 'very-heavy':35 };
+  const MAX = 42;
+  const bars = getSemPlan().map(sem => {
+    const hrs = sem.courses.reduce((t,c) => t + (wl[COURSES[c]?.workload||'medium']||0), 0);
+    const pct = Math.min(hrs/MAX*100, 100);
+    const cls = hrs <= 14 ? 'wl-light' : hrs <= 24 ? 'wl-med' : 'wl-heavy';
+    const lbl = hrs <= 14 ? 'Light' : hrs <= 24 ? 'Moderate' : 'Heavy';
+    return `<div class="wl-row">
+      <div class="wl-lbl">${sem.label.split('–')[0].trim()}<br><small style="color:var(--muted);font-weight:400">${sem.label.split('–')[1]?.trim()}</small></div>
+      <div class="wl-track"><div class="wl-fill ${cls}" style="width:${pct}%">${lbl}</div></div>
+      <div class="wl-hrs">~${hrs}h/wk</div>
+    </div>`;
   }).join('');
+  document.getElementById('wl-bars').innerHTML = bars;
 
-  document.getElementById('workload-bars').innerHTML = bars;
-
-  // Risk flags
-  const risks = [];
-  if (!completedCourses.has('BIOC2000')) risks.push({ icon:'🚨', text:'<strong>BIOC2000</strong> (Molecules, Genes & Cells) is a single-pathway bottleneck — failure delays ALL Year 3 courses.' });
-  risks.push({ icon:'⏰', text:'<strong>BIOM3020</strong> (Thesis) spans two semesters — start planning your research topic in Year 2 Sem 2.' });
-  risks.push({ icon:'📌', text:'<strong>CHEM1200</strong> is only offered in Semester 2 — missing it delays BIOC2000 by a full year.' });
-  if (completedCourses.size < 6) risks.push({ icon:'📋', text:'You\'ve completed fewer than 12 units. If this is Year 1, you\'re on track. Otherwise, review your enrolment.' });
-
-  document.getElementById('risk-flags').innerHTML = risks.map(r => `
-    <div class="alert caution" style="margin-bottom:0.6rem;">
-      <span class="alert-icon">${r.icon}</span>
-      <span>${r.text}</span>
-    </div>
-  `).join('');
+  const risks = [
+    { icon:'🚨', txt:'<strong>BIOC2000</strong> is the single biggest bottleneck — it gates all Year 2 BBiomedSc and all Level 3 biomedical electives. Prioritise CHEM1200 in Semester 2 Year 1.' },
+    { icon:'⚠️', txt:'<strong>CHEM1200</strong> is only offered in Semester 2. Missing it in Year 1 delays BIOC2000 and all downstream courses by 12 months.' },
+    { icon:'📋', txt:'<strong>BIOM3002 (Capstone)</strong> must be completed as a graduation requirement — plan this into your final year.' },
+    { icon:'⏰', txt:'Ensure you complete at least <strong>10 units at Level 3 or higher</strong> in the BSc component before graduation.' },
+  ];
+  document.getElementById('risk-flags').innerHTML = risks.map(r =>
+    `<div class="alert al-warn" style="margin-bottom:.55rem;"><span class="al-icon">${r.icon}</span><span>${r.txt}</span></div>`
+  ).join('');
 }
 
-// ============================================================
-// CAREER TAB
-// ============================================================
-const CAREER_PATHS = [
-  { id:'medicine', icon:'🩺', name:'Medicine (GAMSAT)', desc:'Pursue entry to UQ MD or other graduate medical programs.', courses:['BIOC2000','PHYL2040','ANAT2211','MICR3010','PATH3010','BIOM2011'], tips:'Maintain GPA >5.0. Take GAMSAT in 3rd year. PATH3010 is highly recommended.' },
-  { id:'research', icon:'🔬', name:'Research / PhD', desc:'Academic research career in biomedical sciences.', courses:['BIOM3000','BIOM3020','BIOC3000','GENE3010','BIOC3020'], tips:'Complete the Thesis Project (BIOM3020) for a competitive Honours GPA.' },
-  { id:'biotech', icon:'🧬', name:'Biotechnology', desc:'Industry roles in biotech, diagnostics, and genomics companies.', courses:['GENE2000','GENE3010','BIOC3020','BIOC3000'], tips:'GENE3010 covers CRISPR — critical for modern biotech roles.' },
-  { id:'pharma', icon:'💊', name:'Pharmaceuticals', desc:'Drug development, regulatory affairs, and clinical R&D.', courses:['PHYL2040','PHRM3011','PHRM3012','BIOC3000'], tips:'PK/PD knowledge from PHRM3012 is highly valued in industry.' },
-  { id:'clinical', icon:'🏥', name:'Clinical Trials', desc:'Clinical research coordination and trials management.', courses:['BIOM2011','BIOM3000','MICR3010','IMMU3020','PATH3010'], tips:'Strong biostatistics (BIOM2011) is essential for data analysis roles.' },
-  { id:'pubhealth', icon:'🌐', name:'Public Health', desc:'Epidemiology, policy, and population health research.', courses:['BIOM2020','BIOM2011','MICR2000','IMMU3020'], tips:'BIOM2020 (Global Health) directly aligns with this pathway.' },
+// ── CAREER PATHS ──
+const CAREERS = [
+  { id:'medicine', icon:'🩺', name:'Medicine (MD / GAMSAT)', desc:'Graduate medical program via GAMSAT — plan from Year 1.', courses:['BIOM2012','ANAT3022','MICR3001','BIOC3003','BIOM3002'], tips:'Aim for GPA ≥5.0. Sit GAMSAT in Year 3. ANAT3022 and BIOC3003 are strongly recommended. Volunteer in health settings.' },
+  { id:'research', icon:'🔬', name:'Research / PhD', desc:'Academic career in biomedical or life sciences research.', courses:['BIOC2000','BIOC3000','SCIE3220','BIOC3006','BIOM3002'], tips:'Complete SCIE3220 (Research Project) for hands-on experience. Target GPA ≥5.5 for competitive PhD programs. Talk to academics early.' },
+  { id:'biotech', icon:'🧬', name:'Biotechnology / Genomics', desc:'Industry roles in biotech companies and diagnostic labs.', courses:['BIOL2202','BIOC3003','BIOC3005','BIOC3000'], tips:'BIOL2202 (Genetics) and BIOC3003 (Molecular Medicine) are key. Consider the Bioinformatics or Genetics BSc major for this pathway.' },
+  { id:'pharma', icon:'💊', name:'Pharmaceuticals / Drug Development', desc:'R&D, regulatory affairs and clinical development roles.', courses:['BIOC3005','BIOC3000','NEUR3002','BIOM2012'], tips:'BIOC3005 (Drug Discovery & Development) directly maps to industry. Pharmacology minor in BSc component is ideal.' },
+  { id:'clinical', icon:'🏥', name:'Clinical Trials / Research Coordination', desc:'Clinical research roles in hospitals and CROs.', courses:['STAT1201','BIOM2012','MICR3001','BIOM3002'], tips:'Strong biostatistics (STAT1201/STAT1301) is essential. BIOM3002 Capstone covers research ethics and critical appraisal directly relevant to trials.' },
+  { id:'pubhealth', icon:'🌐', name:'Public Health / Epidemiology', desc:'Population health, policy and epidemiology roles.', courses:['STAT1201','MICR3001','MICR3002','BIOM3002'], tips:'Consider Public Health as your BSc major. STAT1201 or STAT1301 is foundational. MICR3001 is relevant for infectious disease epidemiology.' },
 ];
 
 function renderCareer() {
-  const grid = document.getElementById('career-grid');
-  grid.innerHTML = CAREER_PATHS.map(cp => `
-    <div class="career-card ${selectedCareer.has(cp.id) ? 'selected' : ''}" onclick="selectCareer('${cp.id}')">
-      <div class="career-icon">${cp.icon}</div>
-      <div class="career-name">${cp.name}</div>
-      <div class="career-desc">${cp.desc}</div>
-      <div class="career-courses">
-        ${cp.courses.map(c => `<span class="career-tag">${c}</span>`).join('')}
-      </div>
-      <div style="margin-top:0.75rem; padding:0.6rem; background:var(--uq-light); border-radius:8px; font-size:0.73rem; color:var(--muted); line-height:1.5; ${selectedCareer.has(cp.id)?'display:block':'display:none'}" class="career-tip">
-        💡 ${cp.tips}
-      </div>
-    </div>
-  `).join('');
+  document.getElementById('career-grid').innerHTML = CAREERS.map(cp => `
+    <div class="car-card ${selCareer.has(cp.id) ? 'sel' : ''}" onclick="selCar('${cp.id}')">
+      <div class="car-icon">${cp.icon}</div>
+      <div class="car-name">${cp.name}</div>
+      <div class="car-desc">${cp.desc}</div>
+      <div class="car-tags">${cp.courses.map(c=>`<span class="car-tag">${c}</span>`).join('')}</div>
+      ${selCareer.has(cp.id) ? `<div class="car-tip">💡 ${cp.tips}</div>` : ''}
+    </div>`).join('');
 }
 
-function selectCareer(id) {
-  if (selectedCareer.has(id)) selectedCareer.delete(id);
-  else selectedCareer.add(id);
+function selCar(id) {
+  selCareer.has(id) ? selCareer.delete(id) : selCareer.add(id);
   renderCareer();
 }
-
 function updateCareer() {
-  selectedCareer = new Set([...document.querySelectorAll('.checkbox-item input:checked')].map(cb => cb.value));
+  selCareer = new Set([...document.querySelectorAll('.cbgrp input:checked')].map(cb => cb.value));
 }
 
-function updateMajor() {
-  selectedMajor = document.getElementById('major-select').value;
-  renderPlan();
-}
-
-// ============================================================
-// WHAT-IF SIMULATOR
-// ============================================================
-function simulateFail() {
+// ── WHAT-IF SIMULATORS ──
+function simFail() {
   const code = document.getElementById('fail-course').value;
-  const res = document.getElementById('fail-result');
+  const r = document.getElementById('fail-res');
   if (!code) { alert('Please select a course'); return; }
   const c = COURSES[code];
-  // Find all courses that depend on this
   const blocked = Object.entries(COURSES).filter(([k,v]) => v.prereqs.includes(code)).map(([k]) => k);
-  res.style.display = 'block';
-  res.innerHTML = `
-    <strong>⚠️ If you fail ${code}:</strong><br><br>
-    You will need to <strong>repeat ${code}</strong> in the next available semester (Sem ${c.sem.join(' or ')}).<br><br>
-    <strong>Courses blocked (${blocked.length}):</strong> ${blocked.length > 0 ? blocked.join(', ') : 'None directly'}<br><br>
-    <strong>Graduation impact:</strong> ${blocked.some(b => COURSES[b]?.bottleneck) ? '🚨 High risk — delays graduation by 6–12 months' : '⚠️ Moderate — delays 1 semester if not retaken immediately'}<br><br>
-    <strong>Recommendation:</strong> Contact UQ Student Services immediately and apply for supplementary assessment if eligible.
-  `;
+  r.style.display = 'block';
+  r.innerHTML = `<strong>⚠️ If you fail ${code} (${c.name}):</strong><br><br>
+    You must repeat this course in Semester ${c.sem.join(' or ')}.<br><br>
+    <strong>Directly blocked courses (${blocked.length}):</strong> ${blocked.length ? blocked.join(', ') : 'None'}<br><br>
+    <strong>Graduation impact:</strong> ${blocked.some(b => COURSES[b]?.bottleneck) ? '🚨 HIGH — graduation delayed 6–12 months' : '⚠️ MODERATE — 1 semester delay if not immediately retaken'}<br><br>
+    <strong>Next step:</strong> Contact HMBS Faculty (hmbs@enquire.uq.edu.au) and apply for supplementary assessment if eligible.`;
 }
 
-function simulatePartTime() {
-  const fromSem = parseInt(document.getElementById('parttime-from').value);
-  const load = parseInt(document.getElementById('parttime-load').value);
-  const res = document.getElementById('parttime-result');
-  const remainingSems = 8 - fromSem + 1;
-  const extraSems = Math.ceil(remainingSems * (4 / load)) - remainingSems;
-  const _startYr = parseInt((document.getElementById('start-sem')?.value || 'sem1-2026').split('-')[1]); const newGradYear = _startYr + 3 + Math.ceil((fromSem - 1 + remainingSems + extraSems) / 2);
-  res.style.display = 'block';
-  res.innerHTML = `
-    <strong>📅 Switching to ${load} courses/sem from Semester ${fromSem}:</strong><br><br>
-    Additional semesters needed: <strong>+${extraSems}</strong><br>
-    Estimated new graduation: <strong>November ${newGradYear}</strong><br><br>
-    <strong>Advantages:</strong> Reduced stress, more time for work/internships, better GPA<br>
-    <strong>Considerations:</strong> Impact on scholarship conditions, student visa (international), longer HECS debt<br><br>
-    <strong>Recommendation:</strong> Speak with a UQ Academic Advisor before changing load.
-  `;
+function simPT() {
+  const from = parseInt(document.getElementById('pt-from').value);
+  const load = parseInt(document.getElementById('pt-load').value);
+  const r = document.getElementById('pt-res');
+  const rem = 8 - from + 1;
+  const extra = Math.ceil(rem * (4 / load)) - rem;
+  const sY = parseInt(((document.getElementById('start-sem')||{}).value||'sem1-2026').split('-')[1]);
+  r.style.display = 'block';
+  r.innerHTML = `<strong>📅 Part-time from Semester ${from} (${load} courses/sem):</strong><br><br>
+    Additional semesters needed: <strong>+${extra}</strong><br>
+    New expected graduation: <strong>November ${sY + 3 + Math.ceil(extra/2)}</strong><br><br>
+    <strong>Note:</strong> International students must check student visa conditions — part-time may affect visa compliance.<br>
+    <strong>Scholarship holders:</strong> Check conditions before reducing load.<br>
+    <strong>Recommendation:</strong> Speak with HMBS Faculty before changing load.`;
 }
 
-function simulateMajorChange() {
-  const newMaj = document.getElementById('new-major').value;
-  const majNames = { genetics:'Genetics & Genomics', pharmacology:'Pharmacology', microbio:'Microbiology & Immunology', physiology:'Physiology & Neuroscience', biochem:'Biochemistry & Mol. Biology' };
-  const res = document.getElementById('major-result');
-  res.style.display = 'block';
-  res.innerHTML = `
-    <strong>🔄 Switching to ${majNames[newMaj]}:</strong><br><br>
-    Core requirements remain the same (64 units).<br>
-    Major-specific courses to add: <strong>~8–10 units</strong><br><br>
-    <strong>Likely impact:</strong> If you haven't started major courses, this is seamless. If you've completed 1–2 major courses from your old major, expect to carry ~4 units of "elective credit".<br><br>
-    <strong>Timeline impact:</strong> Minimal if switching before Semester 4.<br><br>
-    <strong>Action:</strong> Submit a program variation request via mySI-net and confirm with your Academic Advisor.
-  `;
+function simMajor() {
+  const maj = document.getElementById('new-major').value;
+  const names = { genetics:'Genetics', biochem:'Biochemistry & Molecular Biology', microbio:'Microbiology', neuroscience:'Neuroscience (minor)', pharmacology:'Pharmacology (minor)' };
+  const r = document.getElementById('major-res');
+  r.style.display = 'block';
+  r.innerHTML = `<strong>🔄 Switching BSc component to ${names[maj]}:</strong><br><br>
+    BBiomedSc core requirements are unchanged.<br>
+    BSc major-specific courses to adjust: <strong>~8–10 units</strong> (depending on how many you've already completed).<br><br>
+    <strong>Impact:</strong> If switching before starting Level 2 BSc courses — minimal impact. If already in Year 2+, expect to carry some courses as elective credit.<br><br>
+    <strong>Action:</strong> Submit a program variation request in mySI-net and contact Faculty of Science (enquire@science.uq.edu.au).`;
 }
 
-function simulateOverload() {
-  const sem = document.getElementById('overload-sem').value;
-  const res = document.getElementById('overload-result');
-  res.style.display = 'block';
-  res.innerHTML = `
-    <strong>📚 Overloading Semester ${sem} (+1 course):</strong><br><br>
-    Total units: <strong>10 units</strong> (vs standard 8)<br>
-    Estimated weekly workload: <strong>~40–45 hours</strong><br><br>
-    <strong>Benefits:</strong> Graduate 0.5 semesters earlier, save tuition fees<br>
-    <strong>Risks:</strong> High burnout risk, especially if semester includes BIOC3000 or thesis. GPA may be impacted.<br><br>
-    <strong>Eligibility:</strong> UQ requires GPA ≥ 4.5 and faculty approval for overload enrolment.<br><br>
-    <strong>Recommendation:</strong> Only overload in a semester rated "Moderate" workload, not "Heavy" or "Very Heavy".
-  `;
+function simOL() {
+  const sem = document.getElementById('ol-sem').value;
+  const r = document.getElementById('ol-res');
+  r.style.display = 'block';
+  r.innerHTML = `<strong>📚 Overloading Semester ${sem} (+1 course, 5 total):</strong><br><br>
+    Total units: <strong>10u</strong> vs standard 8u<br>
+    Estimated weekly workload: <strong>~40–48 hours</strong><br><br>
+    <strong>Benefits:</strong> Graduate 0.5 semesters earlier, reduced HECS debt<br>
+    <strong>Risks:</strong> Burnout risk is high if semester includes BIOC2000, BIOC3000 or other heavy courses.<br>
+    <strong>Eligibility:</strong> Requires GPA ≥ 4.5 and faculty approval via mySI-net.<br><br>
+    <strong>Recommendation:</strong> Only overload in a "Moderate" workload semester — never in one rated "Heavy".`;
 }
 
-// ============================================================
-// TAB SWITCHER
-// ============================================================
 function switchTab(tab) {
-  document.querySelectorAll('.tab-btn').forEach((b, i) => {
-    b.classList.toggle('active', ['plan','whatif','workload','career'][i] === tab);
-  });
-  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach((b,i) => b.classList.toggle('active', ['plan','whatif','workload','career'][i] === tab));
+  document.querySelectorAll('.tc').forEach(c => c.classList.remove('active'));
   document.getElementById('tab-' + tab).classList.add('active');
-
   if (tab === 'career') renderCareer();
   if (tab === 'workload') renderWorkload();
 }
 
-function showElectiveHint() {
-  alert('Elective courses available:\n\n• BIOM2020 – Global Health & Disease (2u)\n• NEUR3030 – Neuroscience (2u)\n• PATH3010 – Pathology (2u)\n\nClick "Info" on any elective course chip to learn more and mark as enrolled.');
-}
-
-// ============================================================
-// INIT
-// ============================================================
+// Init
 renderPlan();
+renderWorkload();
 </script>
 </body>
 </html>
